@@ -30,12 +30,17 @@ public:
 
 	Vector3D operator+ (const Vector3D& other);
 	Vector3D operator- (const Vector3D& other);
+
+	Vector3D operator+= (const Vector3D other);
+	Vector3D operator-= (const Vector3D other);
 	
 	Vector3D operator+ (const float scalar);
 	Vector3D operator- (const float scalar);
 	Vector3D operator* (const float scalar);
 	Vector3D operator/ (const float scalar);
 
+	Vector3D operator+= (const float scalar);
+	Vector3D operator-= (const float scalar);
 };
 
 #endif

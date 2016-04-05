@@ -91,6 +91,21 @@ Vector3D Vector3D::operator- (const Vector3D& other){
 		);
 }
 
+Vector3D Vector3D::operator+= (const Vector3D other) { 
+	return Vector3D(
+		this->m_fData[0] += other.m_fData[0],
+		this->m_fData[1] += other.m_fData[1],
+		this->m_fData[2] += other.m_fData[2]
+	);
+}
+Vector3D Vector3D::operator-= (const Vector3D other) {
+	return Vector3D(
+		this->m_fData[0] -= other.m_fData[0],
+		this->m_fData[1] -= other.m_fData[1],
+		this->m_fData[2] -= other.m_fData[2]
+	);
+}
+
 Vector3D Vector3D::operator+ (const float scalar){
 	//Add scalar to elements
 	return Vector3D(this->m_fData[0] + scalar, this->m_fData[1] + scalar, this->m_fData[2] + scalar);
@@ -111,4 +126,15 @@ Vector3D Vector3D::operator/ (const float scalar){
 	else {
 		return Vector3D();	//Return empty vector
 	}
+}
+
+Vector3D Vector3D::operator+= (const float scalar) {
+	return Vector3D(
+		this->m_fData[0] -= scalar,
+		this->m_fData[1] -= scalar,
+		this->m_fData[2] -= scalar
+	);
+}
+Vector3D Vector3D::operator-= (const float scalar) {
+	return Vector3D(this->m_fData[0] -= scalar, this->m_fData[1] -= scalar, this->m_fData[2] -= scalar);
 }
