@@ -3,7 +3,7 @@
 Game::Game()
 	:m_kiWindowWidth(1280)
 	,m_kiWindowHeight(1024)
-	,m_kiRefreshRate(0.03f)
+	,m_kfRefreshRate(0.03f)
 {
 	int depthBits = 24;
 	int stencilBits = 8;
@@ -12,12 +12,12 @@ Game::Game()
 	int minorVersion = 3;
 
 	m_Context = sf::ContextSettings(depthBits,stencilBits,antiAliasingLevel,majorVersion,minorVersion);
-	m_Window.create(sf::VideoMode(m_kiWindowWidth,m_kiWindowHeight,m_kiRefreshRate), "Airport", 7U, m_Context);
+	m_Window.create(sf::VideoMode(m_kiWindowWidth,m_kiWindowHeight,32), "Airport", 7U, m_Context);
 	m_WindowSettings = m_Window.getSettings();
 
 	//Color and depth clear value
 	glClearDepth(1.f);
-	glClearColor(0.f,0.f,0.f,0.f);
+	glClearColor(0.f,0.f,0.f,1.f);
 
 	// Enable Z-buffer read and write
     glEnable(GL_DEPTH_TEST);
@@ -31,17 +31,24 @@ Game::Game()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(90.f, (float)m_kiWindowWidth/m_kiWindowHeight, 1.f, 500.f);
-
-
+	m_lightPosition[3] = 1.0f;
+	SetLightPosition(-50.f,+50.f,100.0f);
 	configureLightSources();
 
-	m_TextureLoader = new TextureLoader();
+	m_ModelReader = new ModelReader();
+	modelData = m_ModelReader->ReadModelObjData("models/polygons.obj");
+	model.setModel(modelData);
+	model.setPosition(0.0f,0.0f,0.0f);
 
-	//m_ModelReader = new ModelReader();
+	m_TextureLoader = new TextureLoader();
+	m_TextureLoader->LoadBMP("images/lava100.bmp", m_textures[0]);
+	modelData.setTexture(m_textures[0]);
 }
 
 Game::~Game() {
 	delete m_TextureLoader;
+	
+	delete m_ModelReader;
 }
 
 void Game::run() {
@@ -80,21 +87,25 @@ void Game::handleEvents() {
 }
 
 void Game::update(float h) {
-
+	float fSpeed = 50.0f;
+	//model.rotateX(fSpeed * h);
+	model.rotateY(fSpeed * h);
 }
 
 void Game::render() {
 	m_Window.setActive();
 
-	if (m_Elapsed.getElapsedTime().asSeconds() > m_kiRefreshRate) {
-
+	if (m_Elapsed.getElapsedTime().asSeconds() > m_kfRefreshRate) {
+		glTranslatef(0.0f,0.0f,-30.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		glPushMatrix();
-		glPopMatrix();
+		SetMaterialWhite();
+		gluLookAt(1.0f,1.0f,1.0f,
+				  0.0f,0.0f,0.0f,
+				  0.0f,1.0f,0.0f);
 
+		model.draw();
 
 		m_Elapsed.restart();
 		m_Window.display();
@@ -108,8 +119,7 @@ void Game::configureLightSources() {
 	GLfloat lightModelAmbient[] = {0.3f, 0.3f, 0.3f, 1.0};
 
 	// put light behind and above us on left
-	SetLightPosition(0.0f, m_lightPosition[1], m_lightPosition[2]);
-
+	SetLightPosition(m_lightPosition[0], m_lightPosition[1], m_lightPosition[2]);
 	glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColour);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightColour);

@@ -1,15 +1,14 @@
 #include "stdafx.h"
 #include "ModelReader.h"
 
+ModelReader::ModelReader() {
+	bHasNormals = false;
+}
 
 ModelReader::ModelReader(string filename)
 {
+	bHasNormals = false;
 	ReadModelObjData(filename);
-
-	//expand the data suitable for lDrawArrays()
-	CreateExpandedVertices();
-	CreateExpandedNormals();
-	CreateExpandedTextureCoordinates();
 }
 
 ModelReader::~ModelReader(void)
@@ -17,7 +16,7 @@ ModelReader::~ModelReader(void)
 
 }
 
-void ModelReader::ReadModelObjData(string filename)
+ModelData ModelReader::ReadModelObjData(string filename)
 {
 	std::fstream modelfile(filename, std::ios_base::in);
 
@@ -26,7 +25,7 @@ void ModelReader::ReadModelObjData(string filename)
 		std::cerr << "File " << filename << " not found.";
 		DebugBreak();
 		throw std::invalid_argument( "File not found" );
-		return;	//ERROR!!!
+		//return;	//ERROR!!!
 	}
 
 	string line;
@@ -58,6 +57,9 @@ void ModelReader::ReadModelObjData(string filename)
 		else if (token == "vn")
 		{
 			ProcessVertexNormalLine(iss);
+			if (!bHasNormals) {
+				bHasNormals = true;
+			}
 		}
 		else if (token == "vt")
 		{
@@ -74,6 +76,13 @@ void ModelReader::ReadModelObjData(string filename)
 		}
 	}
 	modelfile.close();
+
+	//expand the data suitable for lDrawArrays()
+	CreateExpandedVertices();
+	CreateExpandedNormals();
+	CreateExpandedTextureCoordinates();
+
+	return ModelData(m_vertexTriplets,m_vertexNormalTriplets,m_vertexTexturePairs,bHasNormals);
 }
 
 void ModelReader::ProcessVertexLine(istringstream& iss)
@@ -187,17 +196,6 @@ void ModelReader::CreateExpandedNormals()
 }
 void ModelReader::CreateExpandedTextureCoordinates()
 {
-	// create actual vertices here (with duplicates)
-	// this is in the form that glDrawArrays can work with
-	//
-	// assume triangles so far
-	// assert((faceVertexIndices.size() % 3) == 0);
-
-	// TODO  - index and copy 2 floats to the m_vertexTexturePairs vector
-	//for (std::vector<unsigned int>::iterator it = m_faceTextureIndices.begin(); it != m_faceTextureIndices.end(); ++it) {
-	//	m_vertexTexturePairs.push_back(m_vertexTextureCoordinates.at(*it));
-	//	m_vertexTexturePairs.push_back(m_vertexTextureCoordinates.at(*it + 1));
-	//}
 	for (std::vector<unsigned int>::iterator it = m_faceTextureIndices.begin(); it != m_faceTextureIndices.end(); ++it) {
 		int index = *it * 2;
 		m_vertexTexturePairs.push_back(m_vertexTextureCoordinates.at(index));

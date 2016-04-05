@@ -5,8 +5,7 @@ Transformable::Transformable() {
 	 m_vPosition = Vector3D();
 	 m_vRotation = Vector3D();
 	 m_vOrigin = Vector3D();
-	 m_vScale = Vector3D();
-
+	 m_vScale = Vector3D(1.0f,1.0f,1.0f);
 }
 
 void Transformable::move(Vector3D vector) { m_vPosition += vector; }

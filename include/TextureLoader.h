@@ -12,8 +12,6 @@ public:
 	TextureLoader(void);
 	~TextureLoader(void);
 
-
-
 	int LoadBMP(string location, GLuint &texture); 
 };
 

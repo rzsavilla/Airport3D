@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "ModelData.h"
 
 using namespace std;
 
@@ -42,11 +43,13 @@ class ModelReader
 		vector<float> m_vertexNormalTriplets; 
 		vector<float> m_vertexTexturePairs;
 
+		bool bHasNormals;
 	public:
+		ModelReader();					//!< Default Constructor
 		ModelReader(string filename);
 		~ModelReader(void);
 
-		void ModelReader::ReadModelObjData(string filename);
+		ModelData ModelReader::ReadModelObjData(string filename);
 
 		void ProcessVertexLine(istringstream& iss);
 		void ProcessVertexNormalLine(istringstream& iss);
