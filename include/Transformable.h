@@ -29,6 +29,8 @@ public:
 	void setOrigin(const Vector3D newOrigin);
 	void setScale(const Vector3D newScale);
 
+	void setScale(const float newScale);
+
 	void setPosition(const float x, const float y, const float z);
 	void setRotation(const float x, const float y, const float z);
 	void setOrigin(const float x, const float y, const float z);

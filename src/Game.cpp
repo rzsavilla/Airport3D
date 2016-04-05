@@ -36,7 +36,7 @@ Game::Game()
 	configureLightSources();
 
 	m_ModelReader = new ModelReader();
-	modelData = m_ModelReader->ReadModelObjData("models/polygons.obj");
+	modelData = m_ModelReader->ReadModelObjData("models/cessna172sp.obj");
 	model.setModel(modelData);
 	model.setPosition(0.0f,0.0f,0.0f);
 
@@ -90,13 +90,14 @@ void Game::update(float h) {
 	float fSpeed = 50.0f;
 	//model.rotateX(fSpeed * h);
 	model.rotateY(fSpeed * h);
+	model.setScale(0.5f);
 }
 
 void Game::render() {
 	m_Window.setActive();
 
 	if (m_Elapsed.getElapsedTime().asSeconds() > m_kfRefreshRate) {
-		glTranslatef(0.0f,0.0f,-30.f);
+		glTranslatef(0.0f,0.0f,-100.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();

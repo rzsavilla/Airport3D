@@ -11,7 +11,7 @@ Model::~Model()  {
 void Model::setModel(ModelData &model) {
 	m_ModelData = &model;
 	m_bModelSet = true;
-	setOrigin(m_ModelData->getSize() / 2);	// Default origin will be centre of object
+	//setOrigin(m_ModelData->getSize() / 2);	// Default origin will be centre of object
 }
 
 void Model::draw() {

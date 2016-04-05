@@ -27,6 +27,14 @@ void Transformable::setOrigin(const Vector3D newOrigin) {
 void Transformable::setScale(const Vector3D newScale) {
 	m_vScale = newScale;
 }
+
+void Transformable::setScale(const float newScale) {
+	m_vScale.setX(newScale);
+	m_vScale.setY(newScale);
+	m_vScale.setZ(newScale);
+}
+
+
 void Transformable::setPosition(const float x, const float y, const float z) {
 	m_vPosition.setX(x);
 	m_vPosition.setY(y);
