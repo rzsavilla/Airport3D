@@ -13,6 +13,7 @@ protected:
 	bool m_bPositionChanged;
 	bool m_bScaleChanged;
 	bool m_OriginChanged;
+	bool m_bRotationChanged;
 public:
 	Transformable();				//!< Default Contstructor
 

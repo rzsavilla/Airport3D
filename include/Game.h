@@ -8,6 +8,7 @@
 #include "TextureLoader.h"
 #include "ModelReader.h"
 #include "Model.h"
+#include "Camera.h"
 
 #include <SFML/glew.h>
 #include <SFML/OpenGL.hpp>
@@ -33,8 +34,10 @@ private:
 	GLuint m_textures[2];
 private:
 	///////////////////MODELS///////////////////////
-	ModelData modelData;
-	Model model;
+	ModelData modelData[5];
+	Model model[5];
+
+	Camera camera;
 private:
 	///////////////////INPUTS///////////////////////
 	sf::Event m_Event;
@@ -47,7 +50,7 @@ private:
 private:
 	/////////////Game Loop///////////////////////////
 	void handleEvents();
-	void update(float h);
+	void update(sf::Time timer);
 	void render();
 
 	float m_lightPosition[4];

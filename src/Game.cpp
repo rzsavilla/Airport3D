@@ -3,7 +3,7 @@
 Game::Game()
 	:m_kiWindowWidth(1280)
 	,m_kiWindowHeight(1024)
-	,m_kfRefreshRate(0.03f)
+	,m_kfRefreshRate(0.0f)
 {
 	int depthBits = 24;
 	int stencilBits = 8;
@@ -30,34 +30,51 @@ Game::Game()
     // Setup a perspective projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(90.f, (float)m_kiWindowWidth/m_kiWindowHeight, 1.f, 500.f);
-	m_lightPosition[3] = 1.0f;
-	SetLightPosition(-50.f,+50.f,100.0f);
+    gluPerspective(90.f, (float)m_kiWindowWidth/m_kiWindowHeight, 1.f, 50000.f);
+
+	SetLightPosition(0.0f,+500.f,0.0f);
 	configureLightSources();
 
 	m_ModelReader = new ModelReader();
-	modelData = m_ModelReader->ReadModelObjData("models/cessna172sp.obj");
-	model.setModel(modelData);
-	model.setPosition(0.0f,0.0f,0.0f);
+	modelData[0] = m_ModelReader->ReadModelObjData("models/map.obj");
+	modelData[1] = m_ModelReader->ReadModelObjData("models/hangar.obj");
+	modelData[2] = m_ModelReader->ReadModelObjData("models/cessna.obj");
+
+	model[0].setModel(modelData[0]);
+	model[1].setModel(modelData[1]);
+	model[2].setModel(modelData[2]);
+
+	model[0].setPosition(0.0f,0.0f,0.0f);
+	model[1].setPosition(0.0f,0.0f,0.0f);
+	model[2].setPosition(0.0f,0.0f,0.0f);
+
 
 	m_TextureLoader = new TextureLoader();
 	m_TextureLoader->LoadBMP("images/lava100.bmp", m_textures[0]);
-	modelData.setTexture(m_textures[0]);
+	m_TextureLoader->LoadBMP("images/hangar.bmp", m_textures[1]);
+	modelData[0].setTexture(m_textures[0]);
+	modelData[1].setTexture(m_textures[0]);
+	camera.setPosition(0.0f,100.0f,500.0f);
+
+	m_KeyPressSub.attach(&camera);
+	//model.setOrigin(0.5,0.5,0.5);
+	//model.setScale(0.2);
+
 }
 
 Game::~Game() {
 	delete m_TextureLoader;
-	
 	delete m_ModelReader;
 }
 
 void Game::run() {
-
+	m_TimeStep.restart();
 	while(m_Window.isOpen()) {
 		handleEvents();
-		update(m_TimeStep.getElapsedTime().asSeconds());
-		render();
-		m_TimeStep.restart();
+		if (m_Elapsed.getElapsedTime().asSeconds() > m_kfRefreshRate) {
+			update(m_TimeStep.restart());
+			render();
+		}
 	}
 }
 
@@ -82,36 +99,34 @@ void Game::handleEvents() {
 		}
 
 		//Mouse Inputs
-
 	}
 }
-
-void Game::update(float h) {
-	float fSpeed = 50.0f;
+float fX = 0.0f;
+void Game::update(sf::Time timer) {
+	camera.update(0.01f);
+	float fSpeed = 50.f;
+	//model.setPosition(0.0f,0.0f,fX -= 0.001);
 	//model.rotateX(fSpeed * h);
-	model.rotateY(fSpeed * h);
-	model.setScale(0.5f);
+	//model[1].rotateY(fSpeed * timer.asSeconds());
+	//model.setScale(0.5f);
 }
 
 void Game::render() {
 	m_Window.setActive();
 
-	if (m_Elapsed.getElapsedTime().asSeconds() > m_kfRefreshRate) {
-		glTranslatef(0.0f,0.0f,-100.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		SetMaterialWhite();
-		gluLookAt(1.0f,1.0f,1.0f,
-				  0.0f,0.0f,0.0f,
-				  0.0f,1.0f,0.0f);
-
-		model.draw();
-
-		m_Elapsed.restart();
-		m_Window.display();
-	}
 	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+		
+	camera.draw();
+
+	SetMaterialWhite();
+	model[0].draw();
+	model[1].draw();
+
+	m_Elapsed.restart();
+	m_Window.display();
 }
 
 void Game::configureLightSources() {
@@ -121,6 +136,7 @@ void Game::configureLightSources() {
 
 	// put light behind and above us on left
 	SetLightPosition(m_lightPosition[0], m_lightPosition[1], m_lightPosition[2]);
+	//SetLightPosition(0.0f,50.f,0.0f);
 	glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColour);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightColour);

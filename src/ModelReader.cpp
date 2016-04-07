@@ -18,6 +18,16 @@ ModelReader::~ModelReader(void)
 
 ModelData ModelReader::ReadModelObjData(string filename)
 {
+	m_vertices.clear();
+	m_vertexNormals.clear();
+	m_vertexTextureCoordinates.clear();
+	m_faceVertexIndices.clear();
+	m_faceTextureIndices.clear();
+	m_faceNormalIndices.clear();
+	m_vertexTriplets.clear();
+	m_vertexNormalTriplets.clear();
+	m_vertexTexturePairs.clear();
+
 	std::fstream modelfile(filename, std::ios_base::in);
 
 	if(!modelfile.is_open())
