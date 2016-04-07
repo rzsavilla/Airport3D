@@ -3,12 +3,14 @@
 <modeldata id="0" filename="simpleCube3.obj" />
 <modeldata id="1" filename="map.obj" />
 <modeldata id="2" filename="hangar.obj" />
-<modeldata id="3" filename="cessna.obj" />
+#<modeldata id="3" filename="cessna.obj" />
 
-<camera id="0" posx="0.0" posy="10.0" posz="10.0" rotx="0.0" roty="0.0" rotz="0.0" />
+<camera id="0" posx="300.0" posy="100.0" posz="300.0" rotx="10.0" roty="0.0" rotz="0.0" />
 
 <model id="0" dataID="1" textureID="0" posx="0.0" posy="0.0" posz="0.0" rotx="0.0" roty="0.0" rotz="0.0" />
+
 <model id="1" dataID="2" textureID="0" posx="0.0" posy="0.0" posz="-300.0" rotx="0.0" roty="0.0" rotz="0.0" />
+
 <model id="2" dataID="3" textureID="0" posx="0.0" posy="0.0" posz="-300.0" rotx="0.0" roty="45.0" rotz="0.0" />
-<model id="2" dataID="3" textureID="0" posx="0.0" posy="0.0" posz="-300.0" rotx="0.0" roty="-45.0" rotz="0.0" />
-<model id="3" dataID="3" textureID="0" posx="0.0" posy="0.0" posz="0.0" rotx="0.0" roty="0.0" rotz="0.0" />
+<model id="3" dataID="3" textureID="0" posx="0.0" posy="0.0" posz="-300.0" rotx="0.0" roty="-45.0" rotz="0.0" />
+<model id="4" dataID="3" textureID="0" posx="0.0" posy="0.0" posz="0.0" rotx="0.0" roty="0.0" rotz="0.0" />

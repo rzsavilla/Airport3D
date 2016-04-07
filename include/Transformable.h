@@ -10,10 +10,6 @@ protected:
 	Vector3D m_vOrigin;
 	Vector3D m_vScale;
 	bool m_bUpdated;					//!< Flag, member variable has been changed
-	bool m_bPositionChanged;
-	bool m_bScaleChanged;
-	bool m_OriginChanged;
-	bool m_bRotationChanged;
 public:
 	Transformable();				//!< Default Contstructor
 

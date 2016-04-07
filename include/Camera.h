@@ -1,3 +1,8 @@
+/*
+	Code used for camera rotation
+	https://github.com/dchhetri/OpenGL-City/blob/master/opengl_camera.cpp
+*/
+
 #ifndef CAMERA_H
 #define CAMERA_H
 
@@ -16,18 +21,23 @@ private:
 	Vector3D m_vDirection;
 	Vector3D m_vRight;
 	Vector3D m_vUp;
+	Vector3D m_vOldRotation;
 
 	Vector3D m_vLSight;			//!< Line of sight		
 	float m_fSpeed;				//!< Camera move speed
 	float m_fRotationSpeed;		//!< Speed of camera rotation
 	float m_fSpeedH;			//!< Speed multiplied by timestep
 	float m_fRotationSpeedH;	//!< Speed multiplied by timestep
+private:
+	void updateRotationX();
+	void updateRotationY();
+	void updateRotationZ();
 
-	void computeDir();
 	void computeRight();
 	void computeUp();
 
-	void keysUpdated(KeyPressEvent* state);		//!< Function called when key event occurs
+protected:
+		void keysUpdated(KeyPressEvent* state);		//!< Function called when key event occurs
 public:
 	Camera();				//!< Default Constructor
 

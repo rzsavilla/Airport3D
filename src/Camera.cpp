@@ -19,10 +19,16 @@ Camera::Camera() {
 	m_vRight = m_vRight.unitVector();
 	m_vDirection = m_vDirection.unitVector();
 	m_vUp = m_vUp.unitVector();
+
+	m_vOldRotation = Vector3D(0.0f,0.0f,0.0f);
 }
 
 void Camera::keysUpdated(KeyPressEvent* state) {
 	//Movement
+	if (state->pressed(Keyboard::Space)) {
+		setRotation(0.0f,0.0f,0.0f);
+	}
+
 	if (state->pressed(Keyboard::LShift)) {
 		if (state->pressed(Keyboard::W))										//Go Up Y
 			goUp();
@@ -76,118 +82,102 @@ void Camera::update(float timeStep) {
 }
 
 void Camera::draw() {
+
 	if (m_bUpdated) {
-		computeDir();
-		computeRight();
-		computeUp();
+		//Rotations changed
+		updateRotationX();		//Update
+		updateRotationY();
+		updateRotationZ();
 		m_bUpdated = false;
 	}
+	
 	m_vLSight = m_vPosition + m_vDirection;
 	gluLookAt(
 		m_vPosition.getX(),m_vPosition.getY(),m_vPosition.getZ(),
 		m_vLSight.getX(),m_vLSight.getY(),m_vLSight.getZ(),
 		m_vUp.getX(),m_vUp.getY(),m_vUp.getZ()
-		);
+	);
+	
+
+	//std::cout << m_vRotation.getX() << " " << m_vRotation.getY() << " " << m_vRotation.getZ() << std::endl;
 }
 
-void Camera::computeDir() {
-
+void Camera::goForward() {
+	move(m_vDirection * m_fSpeedH);
 }
+void Camera::goBackward() {
+	move((m_vDirection * m_fSpeedH) * -1);
+}
+void Camera::goLeft() {
+	move((m_vRight * m_fSpeedH) * -1);
+}
+void Camera::goRight() {
+	move(m_vRight * m_fSpeedH);
+}
+void Camera::goUp() {
+	move(m_vUp * m_fSpeedH);
+}
+void Camera::goDown() {
+	move((m_vUp * m_fSpeedH) * -1);
+}
+
+void Camera::lookUp() {
+	rotateY(m_fRotationSpeedH);
+}
+void Camera::lookDown() {
+	rotateY(-m_fRotationSpeedH);
+}
+void Camera::turnLeft() {
+	rotateX(-m_fRotationSpeedH);
+}
+void Camera::turnRight() {
+	rotateX(m_fRotationSpeedH);
+}
+void Camera::tiltLeft() {
+	rotateZ(m_fRotationSpeedH);
+}
+void Camera::tiltRight() {
+	rotateZ(-m_fRotationSpeedH);
+}
+
+void Camera::updateRotationX() {
+	float fAngle = (m_vRotation.getX() - m_vOldRotation.getX()) ;	//Calculate difference
+	m_vOldRotation.setX(m_vRotation.getX());						//Update OldRotation
+
+
+	m_vDirection = m_vDirection * cos(fAngle * (3.141 / 180.0f)) +
+					m_vRight * sin(fAngle * (3.141 / 180.0f));
+
+	m_vDirection = m_vDirection.unitVector();						//Normalize
+
+	computeRight();
+}
+void Camera::updateRotationY() {
+	float fAngle = (m_vRotation.getY() - m_vOldRotation.getY());	//Calculate difference			
+	m_vOldRotation.setY(m_vRotation.getY());						//Update OldRotation			
+																				
+	m_vDirection = m_vDirection * cos(fAngle * (3.141 / 180.0f)) +
+				   m_vUp * sin(fAngle * (3.141 / 180.0f));
+	
+	m_vDirection = m_vDirection.unitVector();						//Normalize
+
+	computeUp();
+}
+void Camera::updateRotationZ() {
+	float fAngle = (m_vRotation.getZ() - m_vOldRotation.getZ());	//Calculate difference
+	m_vOldRotation.setZ(m_vRotation.getZ());						//Update OldRotation
+
+	m_vRight = m_vRight * cos(fAngle * (3.141 / 180.0f)) +
+				   m_vUp * sin(fAngle * (3.141 / 180.0f));
+
+	m_vDirection = m_vDirection.unitVector();						//Normalize
+
+	computeUp();
+}
+
 void Camera::computeRight() {
 	m_vRight = m_vDirection.crossProduct(m_vUp);
 }
 void Camera::computeUp() {
 	m_vUp = m_vDirection.crossProduct(m_vRight) * -1;
-}
-
-void Camera::goForward() {
-	m_vPosition += (m_vDirection * m_fSpeedH);
-}
-void Camera::goBackward() {
-	m_vPosition -= (m_vDirection * m_fSpeedH);
-}
-void Camera::goLeft() {
-	m_vPosition -= (m_vRight * m_fSpeedH);
-}
-void Camera::goRight() {
-	m_vPosition += (m_vRight * m_fSpeedH);
-}
-void Camera::goUp() {
-	m_vPosition += (m_vUp * m_fSpeedH);
-}
-void Camera::goDown() {
-	m_vPosition -= (m_vUp * m_fSpeedH);
-}
-
-void Camera::lookUp() {
-	//Increase angle
-	m_vRotation.setX (m_vRotation.getX() + m_fRotationSpeedH);
-
-	m_vDirection = m_vDirection * cos(m_fRotationSpeedH * (3.141 / 180.0f)) +
-				   m_vUp * sin(m_fRotationSpeedH * (3.141 / 180.0f));
-	
-	m_vDirection = m_vDirection.unitVector();	//Normalize
-
-	computeUp();
-}
-
-void Camera::lookDown() {
-	///Increase angle
-	m_vRotation.setX (m_vRotation.getX() - m_fRotationSpeedH);
-
-
-	m_vDirection = m_vDirection * cos(m_fRotationSpeedH * (3.141 / 180.0f)) -
-				   m_vUp * sin(m_fRotationSpeedH * (3.141 / 180.0f));
-	
-	m_vDirection = m_vDirection.unitVector();	//Normalize
-
-	computeUp();
-}
-
-void Camera::turnLeft() {
-	//Increase angle
-	m_vRotation.setY (m_vRotation.getY() - m_fRotationSpeedH);
-
-
-	m_vDirection = m_vDirection * cos(m_fRotationSpeedH * (3.141 / 180.0f)) -
-				   m_vRight * sin(m_fRotationSpeedH * (3.141 / 180.0f));
-
-	m_vDirection = m_vDirection.unitVector();	//Normalize
-
-	computeRight();
-}
-
-void Camera::turnRight() {
-	//Increase angle
-	m_vRotation.setY (m_vRotation.getY() + m_fRotationSpeedH);
-
-	m_vDirection = m_vDirection * cos(m_fRotationSpeedH * (3.141 / 180.0f)) +
-				   m_vRight * sin(m_fRotationSpeedH * (3.141 / 180.0f));
-
-	m_vDirection = m_vDirection.unitVector();	//Normalize
-
-	computeRight();
-}
-
-void Camera::tiltLeft() {
-	//Increase angle
-	m_vRotation.setZ (m_vRotation.getZ() + m_fRotationSpeedH);
-
-	m_vRight = m_vRight * cos(m_fRotationSpeedH * (3.141 / 180.0f)) +
-				   m_vUp * sin(m_fRotationSpeedH * (3.141 / 180.0f));
-
-	m_vDirection = m_vDirection.unitVector();	//Normalize
-
-	computeUp();
-}
-void Camera::tiltRight() {
-	//Increase angle
-	m_vRotation.setZ (m_vRotation.getZ() + m_fRotationSpeedH);
-
-	m_vRight = m_vRight * cos(m_fRotationSpeedH * (3.141 / 180.0f)) -
-				   m_vUp * sin(m_fRotationSpeedH * (3.141 / 180.0f));
-
-	m_vDirection = m_vDirection.unitVector();	//Normalize
-
-	computeUp();
 }

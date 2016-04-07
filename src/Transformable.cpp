@@ -6,14 +6,33 @@ Transformable::Transformable() {
 	 m_vRotation = Vector3D();
 	 m_vOrigin = Vector3D();
 	 m_vScale = Vector3D(1.0f,1.0f,1.0f);
+	 m_bUpdated = true;
 }
 
-void Transformable::move(Vector3D vector) { m_vPosition += vector; }
-void Transformable::rotate(Vector3D vector) { m_vRotation += vector; }
-void Transformable::scale(Vector3D vector){ m_vScale += vector; }
-void Transformable::rotateX(float x){ m_vRotation.setX(m_vRotation.getX() + x); }
-void Transformable::rotateY(float y){ m_vRotation.setY(m_vRotation.getY() + y); }
-void Transformable::rotateZ(float z){ m_vRotation.setZ(m_vRotation.getZ() + z); }
+void Transformable::move(Vector3D vector) { 
+	m_vPosition += vector; 
+	m_bUpdated = true;
+}
+void Transformable::rotate(Vector3D vector) { 
+	m_vRotation += vector; 
+	m_bUpdated = true;
+}
+void Transformable::scale(Vector3D vector){ 
+	m_vScale += vector; 
+	m_bUpdated = true;
+}
+void Transformable::rotateX(float x){ 
+	m_vRotation.setX(m_vRotation.getX() + x); 
+	m_bUpdated = true;
+}
+void Transformable::rotateY(float y){ 
+	m_vRotation.setY(m_vRotation.getY() + y); 
+	m_bUpdated = true;
+}
+void Transformable::rotateZ(float z){ 
+	m_vRotation.setZ(m_vRotation.getZ() + z); 
+	m_bUpdated = true;
+}
 
 void Transformable::setPosition(const Vector3D newPosition) {
 	m_vPosition = newPosition;
@@ -38,7 +57,6 @@ void Transformable::setScale(const float newScale) {
 	m_vScale.setZ(newScale);
 	m_bUpdated = true;
 }
-
 
 void Transformable::setPosition(const float x, const float y, const float z) {
 	m_vPosition.setX(x);
