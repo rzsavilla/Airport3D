@@ -9,6 +9,7 @@
 #include "ModelReader.h"
 #include "Model.h"
 #include "Camera.h"
+#include "Scene.h"
 
 #include <SFML/glew.h>
 #include <SFML/OpenGL.hpp>
@@ -17,6 +18,8 @@
 #include <SFML/glext.h>
 
 class Game {
+private:
+	Scene scene;
 private:
 	////////////////////WINDOW////////////////////////
 	const int m_kiWindowWidth;
@@ -36,7 +39,6 @@ private:
 	///////////////////MODELS///////////////////////
 	ModelData modelData[5];
 	Model model[5];
-
 	Camera camera;
 private:
 	///////////////////INPUTS///////////////////////

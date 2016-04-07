@@ -17,7 +17,7 @@ Game::Game()
 
 	//Color and depth clear value
 	glClearDepth(1.f);
-	glClearColor(0.f,0.f,0.f,1.f);
+	glClearColor(0.0196f,0.6,250.f,0.8f);
 
 	// Enable Z-buffer read and write
     glEnable(GL_DEPTH_TEST);
@@ -30,11 +30,12 @@ Game::Game()
     // Setup a perspective projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(90.f, (float)m_kiWindowWidth/m_kiWindowHeight, 1.f, 50000.f);
+    gluPerspective(90.f, (float)m_kiWindowWidth/m_kiWindowHeight, 0.1f, 50000.f);
 
 	SetLightPosition(0.0f,+500.f,0.0f);
 	configureLightSources();
 
+	/*
 	m_ModelReader = new ModelReader();
 	modelData[0] = m_ModelReader->ReadModelObjData("models/map.obj");
 	modelData[1] = m_ModelReader->ReadModelObjData("models/hangar.obj");
@@ -54,17 +55,20 @@ Game::Game()
 	m_TextureLoader->LoadBMP("images/hangar.bmp", m_textures[1]);
 	modelData[0].setTexture(m_textures[0]);
 	modelData[1].setTexture(m_textures[0]);
-	camera.setPosition(0.0f,100.0f,500.0f);
-
-	m_KeyPressSub.attach(&camera);
+	*/
+	
+	camera.setPosition(0.0f,0.0f,10.f);
+	
 	//model.setOrigin(0.5,0.5,0.5);
 	//model.setScale(0.2);
 
+	scene.loadScene("scene1.xml");
+	m_KeyPressSub.attach(scene.getCamera());
 }
 
 Game::~Game() {
-	delete m_TextureLoader;
-	delete m_ModelReader;
+	//delete m_TextureLoader;
+	//delete m_ModelReader;
 }
 
 void Game::run() {
@@ -109,6 +113,7 @@ void Game::update(sf::Time timer) {
 	//model.rotateX(fSpeed * h);
 	//model[1].rotateY(fSpeed * timer.asSeconds());
 	//model.setScale(0.5f);
+	scene.update(0.001);
 }
 
 void Game::render() {
@@ -119,11 +124,12 @@ void Game::render() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 		
-	camera.draw();
+	//camera.draw();
 
 	SetMaterialWhite();
-	model[0].draw();
-	model[1].draw();
+	//model[0].draw();
+	//model[1].draw();
+	scene.draw();
 
 	m_Elapsed.restart();
 	m_Window.display();

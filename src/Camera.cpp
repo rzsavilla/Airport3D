@@ -3,7 +3,7 @@ using namespace sf;
 
 Camera::Camera() {
 	m_fSpeed = 5000.f;
-	m_fRotationSpeed = 800.f;
+	m_fRotationSpeed = 2000.f;
 	m_fSpeedH = 0.0f;
 	m_fRotationSpeedH = 0.0f;
 
@@ -73,12 +73,16 @@ void Camera::keysUpdated(KeyPressEvent* state) {
 void Camera::update(float timeStep) {
 	m_fSpeedH = m_fSpeed * timeStep;
 	m_fRotationSpeedH = m_fRotationSpeed * timeStep;
-	//std::cout << timeStep.asSeconds() << std::endl;
 }
 
 void Camera::draw() {
+	if (m_bUpdated) {
+		computeDir();
+		computeRight();
+		computeUp();
+		m_bUpdated = false;
+	}
 	m_vLSight = m_vPosition + m_vDirection;
-
 	gluLookAt(
 		m_vPosition.getX(),m_vPosition.getY(),m_vPosition.getZ(),
 		m_vLSight.getX(),m_vLSight.getY(),m_vLSight.getZ(),

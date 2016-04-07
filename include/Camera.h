@@ -7,7 +7,7 @@
 #include <SFML\wglext.h>
 #include <SFML\glext.h>
 #include <iostream>
-#include <SFML/System/Time.hpp>
+#include <SFML/System/Clock.hpp>
 
 #include "KeyPressObserver.h"
 
@@ -30,6 +30,10 @@ private:
 	void keysUpdated(KeyPressEvent* state);		//!< Function called when key event occurs
 public:
 	Camera();				//!< Default Constructor
+
+	void setMoveSpeed(float Speed);
+	void setRotationSpeed(float Speed);
+
 	void update(float timeStep);
 	void draw();
 
