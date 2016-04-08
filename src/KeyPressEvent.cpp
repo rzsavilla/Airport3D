@@ -53,6 +53,7 @@ bool KeyPressEvent::pressed(sf::Keyboard::Key key) {
 			return it->second;
 		}
 	}
+	return false;
 }
 
 void KeyPressEvent::update(sf::Keyboard::Key key, bool isPressed) {

@@ -17,13 +17,14 @@ void Model::setModel(ModelData &model) {
 void Model::draw() {
 	glPushMatrix();
 	//Transformations
-	glScalef(m_vScale.getX(),m_vScale.getY(),m_vScale.getZ());
+	
 	glTranslatef(m_vPosition.getX() + m_vOrigin.getX(),m_vPosition.getY() + m_vOrigin.getY(),m_vPosition.getZ() + m_vOrigin.getZ());
-	glRotatef(m_vRotation.getX(),m_vScale.getX(),0.0f,0.0f);
-	glRotatef(m_vRotation.getY(),0.0f,m_vScale.getY(),0.0f);
-	glRotatef(m_vRotation.getZ(),0.0f,0.0f,m_vScale.getZ());
+	glRotatef(m_vRotation.getX(),1.0f,0.0f,0.0f);
+	glRotatef(m_vRotation.getY(),0.0f,1.0f,0.0f);
+	glRotatef(m_vRotation.getZ(),0.0f,0.0f,1.0f);
+	glScalef(m_vScale.getX(),m_vScale.getY(),m_vScale.getZ());
 	glTranslatef(m_vPosition.getX() - m_vOrigin.getX(),m_vPosition.getY() - m_vOrigin.getY(),m_vPosition.getZ() - m_vOrigin.getZ());
-
+	
 	// Active and specify pointer to vertex array
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_VERTEX_ARRAY);

@@ -213,11 +213,11 @@ void Scene::loadModel(istringstream& iss) {
 		else if (sAttribute == "scalex") {
 			readQuotes(iss,fScale[0]);
 		}
-		else if (sAttribute == "scalex") {
+		else if (sAttribute == "scaley") {
 			readQuotes(iss,fScale[1]);
 		}
-		else if (sAttribute == "scalex") {
-			readQuotes(iss,fScale[0]);
+		else if (sAttribute == "scalez") {
+			readQuotes(iss,fScale[2]);
 		}
 	}
 
