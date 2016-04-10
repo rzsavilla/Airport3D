@@ -1,22 +1,34 @@
 <texture id="0" filename="lava100.bmp" />
+<texture id="1" filename="hangarBox.bmp" />
+<texture id="2" filename="Tower.bmp" />
+<texture id="3" filename="cessna.bmp" />
+<texture id="4" filename="challenger.bmp" />
 
-#<modeldata id="0" filename="simpleCube3.obj" />
-#<modeldata id="1" filename="map.obj" />
-#<modeldata id="2" filename="hangar.obj" />
+
+<modeldata id="0" filename="simpleCube3.obj" />
+<modeldata id="1" filename="map.obj" />
+<modeldata id="2" filename="hangarBox.obj" />
 <modeldata id="3" filename="cessna.obj" />
-<modeldata id="0" filename="learjet.obj" />
-#<modeldata id="0" filename="SportFlyer.obj" />
+<modeldata id="4" filename="challenger.obj" />
+<modeldata id="5" filename="tower.obj" />
 
 <camera id="0" posx="300.0" posy="100.0" posz="300.0" rotx="-45.0" roty="0.0" rotz="0.0" />
 
-<model id="0" dataID="0" textureID="0" posx="0.0" posy="0.0" posz="0.0" rotx="0.0" roty="0.0" rotz="0.0" scalex="100" scaley="100" scalez="100"/>
+#map
+<model id="1" dataID="1" textureID="0" posx="0.0" posy="0.0" posz="-1000.0" rotx="0.0" roty="90.0" rotz="0.0" />
 
-#<model id="1" dataID="3" textureID="0" posx="0.0" posy="0.0" posz="-300.0" rotx="0.0" roty="0.0" rotz="0.0" />
+#Buildings
+	#Hangar
+<model id="4" dataID="2" textureID="1" posx="-1500.0" posy="0.0" posz="-300.0" rotx="0.0" roty="0.0" rotz="0.0" />
+	#Tower
+<model id="4" dataID="5" textureID="2" posx="2000.0" posy="0.0" posz="-300.0" rotx="0.0" roty="0.0" rotz="0.0" scalex="1.2" scaley="1.2" scalez="1.2"/>
 
-#<model id="2" dataID="0" textureID="0" posx="0.0" posy="0.0" posz="-300.0" rotx="0.0" roty="45.0" rotz="0.0" scalex="10" scaley="10" scalez="10"/>
-#<model id="3" dataID="3" textureID="0" posx="0.0" posy="0.0" posz="-300.0" rotx="0.0" roty="-45.0" rotz="0.0" />
-#<model id="4" dataID="3" textureID="0" posx="0.0" posy="0.0" posz="0.0" rotx="0.0" roty="0.0" rotz="0.0" />
-#<model id="2" dataID="3" textureID="0" posx="0.0" posy="0.0" posz="-300.0" rotx="0.0" roty="45.0" rotz="0.0" />
-#<model id="3" dataID="3" textureID="0" posx="0.0" posy="0.0" posz="-300.0" rotx="0.0" roty="-45.0" rotz="0.0" />
+#Aircraft
+	#Cessna
+<model id="3" dataID="3" textureID="3" posx="-1500.0" posy="0.0" posz="-350.0" rotx="0.0" roty="12.0" rotz="0.0" />
+<model id="3" dataID="3" textureID="3" posx="-1200.0" posy="0.0" posz="-200.0" rotx="0.0" roty="45.0" rotz="0.0" />	
+	#Challenger
+<model id="4" dataID="4" textureID="4" posx="-3000.0" posy="0.0" posz="500.0" rotx="0.0" roty="90.0" rotz="0.0" />
+
 
 

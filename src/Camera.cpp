@@ -2,7 +2,7 @@
 using namespace sf;
 
 Camera::Camera() {
-	m_fSpeed = 5000.f;
+	m_fSpeed = 100000.f;
 	m_fRotationSpeed = 2000.f;
 	m_fSpeedH = 0.0f;
 	m_fRotationSpeedH = 0.0f;

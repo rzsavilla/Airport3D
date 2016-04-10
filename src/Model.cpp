@@ -27,7 +27,6 @@ void Model::draw() {
 	
 	// Active and specify pointer to vertex array
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_VERTEX_ARRAY);
 	vector<float>& vertices = m_ModelData->getVertices();			//Pointer to vertex array
 	glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
 
@@ -47,7 +46,8 @@ void Model::draw() {
 	}
 
 	//Draw shape
-	glDrawArrays(GL_TRIANGLES, 0, (unsigned int)vertices.size() / 3);
+	//glDrawElements(GL_TRIANGLES,3,GL_UNSIGNED_INT,0);
+	glDrawArrays(GL_TRIANGLES, 0, (int)vertices.size() / 3);
 
 	//Deactivate vertex arrays after drawing
 	if (m_ModelData->hasNormals()) {
