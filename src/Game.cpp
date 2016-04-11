@@ -32,10 +32,9 @@ Game::Game()
     glLoadIdentity();
     gluPerspective(90.f, (float)m_kiWindowWidth/m_kiWindowHeight, 0.1f, 50000.f);
 
-	SetLightPosition(0.0f,+500.f,-300.0f);
+	
+	SetLightPosition(0.0f,1000.0f,0.0f);
 	configureLightSources();
-
-	camera.setPosition(0.0f,0.0f,10.f);
 
 	scene.loadScene("scene1.xml");
 	m_KeyPressSub.attach(scene.getCamera());
@@ -75,7 +74,6 @@ void Game::handleEvents() {
 			m_KeyPress.update(m_Event.key.code, false);	    //Update Keys released
 			m_KeyPressSub.notify(&m_KeyPress);					//Notify all subscribers
 		}
-
 		//Mouse Inputs
 	}
 }
@@ -91,7 +89,8 @@ void Game::render() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 		
-	SetMaterialWhite();
+	//SetMaterialWhite();
+	
 	scene.draw();
 
 	m_Elapsed.restart();
@@ -104,7 +103,7 @@ void Game::configureLightSources() {
 	GLfloat lightModelAmbient[] = {0.3f, 0.3f, 0.3f, 1.0};
 
 	// put light behind and above us on left
-	//SetLightPosition(m_lightPosition[0], m_lightPosition[1], m_lightPosition[2]);
+	SetLightPosition(m_lightPosition[0], m_lightPosition[1], m_lightPosition[2]);
 	//SetLightPosition(0.0f,50.f,0.0f);
 	glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColour);

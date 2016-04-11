@@ -36,7 +36,7 @@ void Model::draw() {
 		glNormalPointer(GL_FLOAT, 0, &normals[0]);
 	}
 
-	if (m_ModelData->hasTexture()) {
+	if (false && m_ModelData->hasTexture()) {
 		glEnable(GL_TEXTURE_2D);	// we are using textures
 		vector<float>& textureCoordinates = m_ModelData->getTextureCoordinates();
 		glBindTexture(GL_TEXTURE_2D, m_ModelData->getTexture());
@@ -46,15 +46,14 @@ void Model::draw() {
 	}
 
 	//Draw shape
-	//glDrawElements(GL_TRIANGLES,3,GL_UNSIGNED_INT,0);
-	glDrawArrays(GL_TRIANGLES, 0, (int)vertices.size() / 3);
+	glDrawArrays(GL_TRIANGLES, 3, (unsigned int)vertices.size() / 3);
 
 	//Deactivate vertex arrays after drawing
 	if (m_ModelData->hasNormals()) {
 		glDisableClientState(GL_NORMAL_ARRAY);
 	}
 
-	if (m_ModelData->hasTexture()) {
+	if (false && m_ModelData->hasTexture()) {
 		// turn off the texture rendering
 		glBindTexture(GL_TEXTURE_2D, NULL);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
