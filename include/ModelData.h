@@ -18,7 +18,7 @@ protected:
 	GLuint m_Texture;
 public:
 	ModelData(); //!< Default Constructor
-	ModelData(std::vector<float> vertexTriplets, std::vector<float> normalTriplets, std::vector<float> texturePairs, bool hasNormals);
+	ModelData(const std::vector<float> vertexTriplets, const std::vector<float> normalTriplets, const std::vector<float> texturePairs, const bool hasNormals);
 	
 	void setTexture(GLuint& texture);
 

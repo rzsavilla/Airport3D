@@ -16,8 +16,8 @@ void Model::setModel(ModelData &model) {
 
 void Model::draw() {
 	glPushMatrix();
+
 	//Transformations
-	
 	glTranslatef(m_vPosition.getX() + m_vOrigin.getX(),m_vPosition.getY() + m_vOrigin.getY(),m_vPosition.getZ() + m_vOrigin.getZ());
 	glRotatef(m_vRotation.getX(),1.0f,0.0f,0.0f);
 	glRotatef(m_vRotation.getY(),0.0f,1.0f,0.0f);
@@ -36,7 +36,7 @@ void Model::draw() {
 		glNormalPointer(GL_FLOAT, 0, &normals[0]);
 	}
 
-	if (false && m_ModelData->hasTexture()) {
+	if (true && m_ModelData->hasTexture()) {
 		glEnable(GL_TEXTURE_2D);	// we are using textures
 		vector<float>& textureCoordinates = m_ModelData->getTextureCoordinates();
 		glBindTexture(GL_TEXTURE_2D, m_ModelData->getTexture());
@@ -46,14 +46,14 @@ void Model::draw() {
 	}
 
 	//Draw shape
-	glDrawArrays(GL_TRIANGLES, 3, (unsigned int)vertices.size() / 3);
+	glDrawArrays(GL_TRIANGLES, 0, (unsigned int)vertices.size() / 3);
 
 	//Deactivate vertex arrays after drawing
 	if (m_ModelData->hasNormals()) {
 		glDisableClientState(GL_NORMAL_ARRAY);
 	}
 
-	if (false && m_ModelData->hasTexture()) {
+	if (true && m_ModelData->hasTexture()) {
 		// turn off the texture rendering
 		glBindTexture(GL_TEXTURE_2D, NULL);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);

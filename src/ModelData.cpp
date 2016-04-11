@@ -5,12 +5,12 @@ ModelData::ModelData() {
 	m_bHasTexture = false;
 }
 
-ModelData::ModelData(std::vector<float> vertexTriplets, std::vector<float> normalTriplets, std::vector<float> texturePairs, bool hasNormals) {
+ModelData::ModelData(const std::vector<float> vertexTriplets, const std::vector<float> normalTriplets, const std::vector<float> texturePairs,const bool hasNormals) {
 	m_vertexTriplets = vertexTriplets;
 	m_vertexNormalTriplets = normalTriplets;
 	m_vertexTexturePairs = texturePairs;
 	m_bHasNormals = hasNormals;
-	m_calcSize();
+	//m_calcSize();
 	m_bHasTexture = false;
 }
 
@@ -55,6 +55,6 @@ bool ModelData::hasTexture(){ return m_bHasTexture; }
 Vector3D ModelData::getSize() { return m_vSize; };
 GLuint& ModelData::getTexture() { return m_Texture;}
 
-std::vector<float>& ModelData::getVertices() { return m_vertexTriplets;}
-std::vector<float>& ModelData::getNormals(){ return m_vertexNormalTriplets; }
-std::vector<float>& ModelData::getTextureCoordinates(){ return m_vertexTexturePairs; }
+std::vector<float>& const ModelData::getVertices() { return m_vertexTriplets;} 
+std::vector<float>& const ModelData::getNormals(){ return m_vertexNormalTriplets; }
+std::vector<float>& const ModelData::getTextureCoordinates(){ return m_vertexTexturePairs; }

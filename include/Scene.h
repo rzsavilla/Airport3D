@@ -10,6 +10,7 @@
 #include "TextureLoader.h"
 #include "Drawable.h"
 #include "Camera.h"
+#include "Light.h"
 
 class Scene: public Drawable {
 private:
@@ -22,6 +23,7 @@ private:
 	std::string m_sFilename;				//!< File location of .txt file
 	GLuint& getTexture(int id);
 	ModelData& getModelData(int id);
+	Light light;
 private:
 	unsigned int m_uiCamera;				//!< Index for camera to draw/use
 	std::vector<std::pair<int,Camera>> m_vCamera;			//!< Store Camera

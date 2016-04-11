@@ -28,13 +28,9 @@ Game::Game()
 	glCullFace(GL_BACK);
 
     // Setup a perspective projection
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(90.f, (float)m_kiWindowWidth/m_kiWindowHeight, 0.1f, 50000.f);
-
-	
-	SetLightPosition(0.0f,1000.0f,0.0f);
-	configureLightSources();
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+   gluPerspective(45.0f, (float)m_kiWindowWidth/m_kiWindowHeight, 0.1f, 50000.f);
 
 	scene.loadScene("scene1.xml");
 	m_KeyPressSub.attach(scene.getCamera());
@@ -88,10 +84,10 @@ void Game::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-		
-	//SetMaterialWhite();
-	
+
+
 	scene.draw();
+	
 
 	m_Elapsed.restart();
 	m_Window.display();
@@ -103,12 +99,12 @@ void Game::configureLightSources() {
 	GLfloat lightModelAmbient[] = {0.3f, 0.3f, 0.3f, 1.0};
 
 	// put light behind and above us on left
-	SetLightPosition(m_lightPosition[0], m_lightPosition[1], m_lightPosition[2]);
+	//SetLightPosition(m_lightPosition[0], m_lightPosition[1], m_lightPosition[2]);
 	//SetLightPosition(0.0f,50.f,0.0f);
 	glLightfv(GL_LIGHT0, GL_POSITION, m_lightPosition);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColour);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightColour);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, noLight);			// no ambient light from the source
+	glLightfv(GL_LIGHT0, GL_AMBIENT, lightColour);			// no ambient light from the source
 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lightModelAmbient);	// use global ambient instead
 
@@ -130,9 +126,8 @@ void Game::SetMaterialWhite() {
 	GLfloat materialWhiteAmbient[] = {0.2f, 0.2f, 0.2f, 1.0f};
 	GLfloat materialWhiteDiffuse[] = {0.8f, 0.8f, 0.8f, 1.0f};
 	GLfloat materialWhiteSpecular[] = {1.0f, 1.0f, 1.0f, 1.0f};		// so keeps light colour
-	GLfloat materialWhiteShininess = 4.0f;
+	GLfloat materialWhiteShininess = 40.0f;
 	glShadeModel(GL_SMOOTH);
-	//glShadeModel(GL_FLAT);
 	glMaterialfv(GL_FRONT,GL_AMBIENT, materialWhiteAmbient);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, materialWhiteDiffuse);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, materialWhiteSpecular);

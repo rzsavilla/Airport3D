@@ -100,11 +100,13 @@ void ModelReader::ProcessVertexLine(istringstream& iss)
 	// TODO - store 3 floats in m_vertices vector
 	float f;
 	//std::cout <<  "v ";
-	for (int i = 0; i < 3; i++) {
+		iss >> f; 
+		m_vertices.push_back(f);
+		iss >> f; 
+		m_vertices.push_back(f);
 		iss >> f; 
 		m_vertices.push_back(f);
 		//std::cout << f << " ";
-	}
 	//std::cout << std::endl;
 }
 
@@ -183,7 +185,6 @@ void ModelReader::ProcessFaceLine(istringstream& iss)
 	}
 	//std::cout << std::endl;
 }
-
 
 void ModelReader::CreateExpandedVertices()
 {

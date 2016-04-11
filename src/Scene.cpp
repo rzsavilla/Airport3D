@@ -286,12 +286,17 @@ void Scene::update(float h) {
 }
 
 void Scene::draw() {
+
 	//Draw Camera
 	for (auto it = m_vCamera.begin(); it != m_vCamera.end(); ++it) {
 		if (it->first == m_uiCamera) {
 			it->second.draw();
+			light.setRotation(it->second.getRotation().getX(),it->second.getRotation().getY(),it->second.getRotation().getZ());
 		}
 	}
+	glPushMatrix();
+	light.draw();
+	glPopMatrix();
 
 	//Draw Models
 	for (auto it = m_vModels.begin(); it != m_vModels.end(); ++it) {

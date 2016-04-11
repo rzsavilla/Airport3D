@@ -7,8 +7,8 @@ Camera::Camera() {
 	m_fSpeedH = 0.0f;
 	m_fRotationSpeedH = 0.0f;
 
-	setPosition(0.0f,0.0f,0.0f);
-	setRotation(0.0f,0.0f,0.0f);
+	setPosition(1.0f,1.0f,1.0f);
+	setRotation(1.0f,1.0f,1.0f);
 	
 	m_vLSight = Vector3D(0.0f,0.0f,0.0f);
 
@@ -82,7 +82,6 @@ void Camera::update(float timeStep) {
 }
 
 void Camera::draw() {
-
 	if (m_bUpdated) {
 		//Rotations changed
 		updateRotationX();		//Update
@@ -97,9 +96,7 @@ void Camera::draw() {
 		m_vLSight.getX(),m_vLSight.getY(),m_vLSight.getZ(),
 		m_vUp.getX(),m_vUp.getY(),m_vUp.getZ()
 	);
-	
-
-	//std::cout << m_vRotation.getX() << " " << m_vRotation.getY() << " " << m_vRotation.getZ() << std::endl;
+	std::cout << m_vRotation.getX() << " " << m_vRotation.getY() << " " << m_vRotation.getZ() << std::endl;
 }
 
 void Camera::goForward() {
@@ -141,6 +138,12 @@ void Camera::tiltRight() {
 }
 
 void Camera::updateRotationX() {
+	if (m_vRotation.getX() >= 360) {
+		m_vRotation.setX(m_vRotation.getX() - 360);
+	} else if (m_vRotation.getX() < 0) {
+		m_vRotation.setX(m_vRotation.getX() + 360);
+	}
+
 	float fAngle = (m_vRotation.getX() - m_vOldRotation.getX()) ;	//Calculate difference
 	m_vOldRotation.setX(m_vRotation.getX());						//Update OldRotation
 
@@ -153,8 +156,15 @@ void Camera::updateRotationX() {
 	computeRight();
 }
 void Camera::updateRotationY() {
-	float fAngle = (m_vRotation.getY() - m_vOldRotation.getY());	//Calculate difference			
-	m_vOldRotation.setY(m_vRotation.getY());						//Update OldRotation			
+	if (m_vRotation.getY() >= 360) {
+		m_vRotation.setY(m_vRotation.getY() - 360);
+	} else if (m_vRotation.getY() < 0) {
+		m_vRotation.setY(m_vRotation.getY() + 360);
+	}
+
+	float fAngle = (m_vRotation.getY() - m_vOldRotation.getY());	//Calculate difference		
+	
+	m_vOldRotation.setY(m_vRotation.getY());						//Update OldRotation	
 																				
 	m_vDirection = m_vDirection * cos(fAngle * (3.141 / 180.0f)) +
 				   m_vUp * sin(fAngle * (3.141 / 180.0f));
@@ -162,8 +172,16 @@ void Camera::updateRotationY() {
 	m_vDirection = m_vDirection.unitVector();						//Normalize
 
 	computeUp();
+
+	
 }
 void Camera::updateRotationZ() {
+	if (m_vRotation.getZ() >= 360) {
+		m_vRotation.setZ(m_vRotation.getZ() - 360);
+	} else if (m_vRotation.getZ() < 0) {
+		m_vRotation.setZ(m_vRotation.getZ() + 360);
+	}
+
 	float fAngle = (m_vRotation.getZ() - m_vOldRotation.getZ());	//Calculate difference
 	m_vOldRotation.setZ(m_vRotation.getZ());						//Update OldRotation
 
