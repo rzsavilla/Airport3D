@@ -12,6 +12,9 @@
 #include "Camera.h"
 #include "Light.h"
 
+const string sEndLine = " />";
+const char cEndLine = '/>';
+
 class Scene: public Drawable {
 private:
 	bool m_bModelDataLoaded;
@@ -38,6 +41,8 @@ private:
 	void readQuotes(istringstream& iss, int& value);
 	void readQuotes(istringstream& iss, float& value);
 	void readQuotes(istringstream& iss, std::string& value);
+	void removeReturn(istringstream& iss);						//!< Read away "\n"
+	void removeTab(istringstream& iss);							//!< Read away \t"
 public:
 	Scene();
 	Scene(std::string filename);

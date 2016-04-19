@@ -27,22 +27,18 @@ void Scene::loadScene(std::string filename) {
 		std::cerr << "Scene File: " << filename << " not found.";
 		DebugBreak();
 		throw std::invalid_argument("File not found");
-		return;
+		return;		//Exit function
 	}
-
+	char c;
 	std::string sLine;
 	std::string sToken = "";
-	while (getline(sceneFile, sLine)) {
+	while (getline(sceneFile, sLine, '\>')) {		//Read everything withing the '\>'
 		istringstream iss(sLine);
 		sToken = "";
+		
 		iss >> sToken;
-
-		if (sToken == "#") {
-			//ignore comment
-		} else if (sToken == "/>") {
-			//End of line
-		}
-		else if (sToken == "<texture") {
+		//iss.ignore('\n');
+		if (sToken == "<texture") {
 			//std::cout << "Texture found\n";
 			loadTexture(iss);
 			std::cout << "\t" << elapsed.getElapsedTime().asSeconds() << std::endl;
@@ -74,8 +70,9 @@ void Scene::loadTexture(istringstream& iss) {
 	std::string sAttribute;
 	std::string sFilename;
 
-	iss.get();		//Read empty space
-	while (!iss.eof()) {	//While not end of line
+	while (sAttribute != sEndLine && !iss.eof()) {	//While not end of line
+		removeReturn(iss);
+		removeTab(iss);
 		getline(iss,sAttribute, '=');
 		if (sAttribute == "id") {
 			readQuotes(iss, id);
@@ -100,8 +97,9 @@ void Scene::loadModelData(istringstream& iss) {
 	int id = 0;
 	std::string sAttribute;
 	std::string sFilename;
-	iss.get();									//Read empty space
-	while (!iss.eof()) {
+	while (sAttribute != sEndLine &&!iss.eof()) {
+		removeReturn(iss);
+		removeTab(iss);
 		getline(iss,sAttribute, '=');
 		
 		if (sAttribute == "id") {
@@ -132,8 +130,10 @@ void Scene::loadCamera(istringstream& iss) {
 	float fPosition[3] = {0.0f,0.0f,0.0f};		//x,y,z
 	float fRotation[3] = {0.0f,0.0f,0.0f};		//x,y,z
 
-	iss.get();									//Read empty space
+	
 	while (!iss.eof()) {
+		removeReturn(iss);
+		removeTab(iss);
 		getline(iss,sAttribute, '=');
 		
 		if (sAttribute == "id") {
@@ -179,7 +179,8 @@ void Scene::loadModel(istringstream& iss) {
 	float fRotation[3] = {0.0f,0.0f,0.0f};		//x,y,z
 	float fScale[3] = {1.0f,1.0f,1.0f};			//x,y,z
 
-	iss.get();										//Read empty space
+	removeReturn(iss);
+	removeTab(iss);
 	while (!iss.eof()) {
 		getline(iss,sAttribute, '=');
 		
@@ -256,6 +257,28 @@ void Scene::readQuotes(istringstream& iss, std::string& value) {
 	value.pop_back();		//Remove close quotation
 }
 
+void Scene::removeReturn(istringstream& iss) {
+	//Look for "\n" and read it away
+	char c;
+	c = iss.peek();
+	if (c == ' ' || c == '\n') {
+		iss.get();
+		removeReturn(iss);
+		removeTab(iss);
+	}
+}
+
+void Scene::removeTab(istringstream& iss) {
+	//Look for "\n" and read it away
+	char c;
+	c = iss.peek();
+	if (c == ' ' || c == '\t') {
+		iss.get();					//Read
+		removeTab(iss);			//Continue to check for ' ' and '\t'
+		removeReturn(iss);
+	}
+}
+
 GLuint& Scene::getTexture(int id) {
 	for (std::vector<std::pair<int,GLuint>>::iterator it = m_viTextures.begin(); it != m_viTextures.end(); ++it) {
 		if (it->first == id) {
@@ -311,4 +334,3 @@ Camera* Scene::getCamera() {
 		}
 	}
 }
-
