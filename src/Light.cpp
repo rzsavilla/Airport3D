@@ -1,4 +1,5 @@
 #include "Light.h"
+#include <iostream>
 
 Light::Light() {
 	//Default light values
@@ -7,6 +8,7 @@ Light::Light() {
 	setLightColour(1.0f,1.0f,1.0f,1.0f);
 	setNoLightColour(0.0f,0.0f,0.0f,1.0f);
 	setLightModelAmbient(0.3f, 0.3f, 0.3f, 1.0);
+	m_LightNumber = GL_LIGHT0;
 }
 
 void Light::setPostion(float x, float y, float z) {
@@ -42,19 +44,19 @@ void Light::setLightModelAmbient(float R, float G, float B, float A) {
 }
 
 void Light::draw() {
+	//Apply transformations
 	glPushMatrix();
-	
 	glTranslatef(m_position[0], m_position[1], m_position[2]);
 
-	glLightfv(GL_LIGHT0, GL_POSITION, m_position);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColour);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, lightColour);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, noLight);			// no ambient light from the source
-
+	//Set Light values
+	glLightfv(m_LightNumber, GL_POSITION, m_position);
+	glLightfv(m_LightNumber, GL_DIFFUSE, lightColour);
+	glLightfv(m_LightNumber, GL_SPECULAR, lightColour);
+	glLightfv(m_LightNumber, GL_AMBIENT, noLight);			// no ambient light from the source
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lightModelAmbient);	// use global ambient instead
 
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	glEnable(m_LightNumber);
 
 	glPopMatrix;
 }
