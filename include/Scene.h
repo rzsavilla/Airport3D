@@ -14,6 +14,7 @@
 
 const string sEndLine = " />";
 const char cEndLine = '/>';
+const string cComment = "#";
 
 class Scene: public Drawable {
 private:

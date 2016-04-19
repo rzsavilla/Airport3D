@@ -14,6 +14,7 @@ Game::Game()
 	m_Context = sf::ContextSettings(depthBits,stencilBits,antiAliasingLevel,majorVersion,minorVersion);
 	m_Window.create(sf::VideoMode(m_kiWindowWidth,m_kiWindowHeight,32), "Airport", 7U, m_Context);
 	m_WindowSettings = m_Window.getSettings();
+	m_Window.setFramerateLimit(60.0f);
 
 	//Color and depth clear value
 	glClearDepth(1.f);
@@ -41,8 +42,8 @@ Game::~Game() {
 }
 
 void Game::run() {
-	m_TimeStep.restart();
 	while(m_Window.isOpen()) {
+		//Game Loop
 		handleEvents();
 		if (m_Elapsed.getElapsedTime().asSeconds() > m_kfRefreshRate) {
 			update(m_TimeStep.restart());

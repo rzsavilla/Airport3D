@@ -37,32 +37,29 @@ void Scene::loadScene(std::string filename) {
 		sToken = "";
 		
 		iss >> sToken;
-		//iss.ignore('\n');
-		if (sToken == "<texture") {
+		if (sToken == cComment) {
+			continue;					//Ignore comment comment end is '\>'
+		}
+		else if (sToken == "<texture") {
 			//std::cout << "Texture found\n";
 			loadTexture(iss);
-			std::cout << "\t" << elapsed.getElapsedTime().asSeconds() << std::endl;
-			
 		} 
 		else if (sToken == "<modeldata") {
 			//std::cout << "ModelData found\n";
 			loadModelData(iss);
-			std::cout << "\t" << elapsed.getElapsedTime().asSeconds() << std::endl;
 		}
 		else if (sToken == "<camera") {
 			loadCamera(iss);
-			std::cout << "\t" << elapsed.getElapsedTime().asSeconds() << std::endl;
 		}
 		else if (sToken == "<model") {
 			//std::cout << "model found\n";
 			loadModel(iss);
-			std::cout << "\t" << elapsed.getElapsedTime().asSeconds() << std::endl;
 		}
-		
+		std::cout << "\t" << elapsed.getElapsedTime().asSeconds() << std::endl;
 		elapsed.restart();
 	}
 
-	sceneFile.close();
+	sceneFile.close();			//Close the file
 }
 
 void Scene::loadTexture(istringstream& iss) {
@@ -70,7 +67,7 @@ void Scene::loadTexture(istringstream& iss) {
 	std::string sAttribute;
 	std::string sFilename;
 
-	while (sAttribute != sEndLine && !iss.eof()) {	//While not end of line
+	while (!iss.eof()) {	//While not end of line
 		removeReturn(iss);
 		removeTab(iss);
 		getline(iss,sAttribute, '=');
@@ -97,7 +94,7 @@ void Scene::loadModelData(istringstream& iss) {
 	int id = 0;
 	std::string sAttribute;
 	std::string sFilename;
-	while (sAttribute != sEndLine &&!iss.eof()) {
+	while (!iss.eof()) {
 		removeReturn(iss);
 		removeTab(iss);
 		getline(iss,sAttribute, '=');
@@ -179,9 +176,9 @@ void Scene::loadModel(istringstream& iss) {
 	float fRotation[3] = {0.0f,0.0f,0.0f};		//x,y,z
 	float fScale[3] = {1.0f,1.0f,1.0f};			//x,y,z
 
-	removeReturn(iss);
-	removeTab(iss);
 	while (!iss.eof()) {
+		removeReturn(iss);
+		removeTab(iss);
 		getline(iss,sAttribute, '=');
 		
 		if (sAttribute == "id") {
@@ -296,7 +293,6 @@ ModelData& Scene::getModelData(int id) {
 	}
 	return m_vModelData.at(0).second;	//Return default/starting model
 }
-
 
 void Scene::update(float h) {
 	
