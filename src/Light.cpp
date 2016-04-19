@@ -1,8 +1,9 @@
 #include "Light.h"
 
 Light::Light() {
+	//Default light values
 	setPostion(1.0f,500.0f,1.0f);
-	setRotation(0.0f,0.0f,0.0f);
+	setRotation(1.0f,1.0f,1.0f);
 	setLightColour(1.0f,1.0f,1.0f,1.0f);
 	setNoLightColour(0.0f,0.0f,0.0f,1.0f);
 	setLightModelAmbient(0.3f, 0.3f, 0.3f, 1.0);
@@ -43,9 +44,6 @@ void Light::setLightModelAmbient(float R, float G, float B, float A) {
 void Light::draw() {
 	glPushMatrix();
 	
-	//glRotatef(m_rotation[0],1.0f,0.0f,0.0f);
-	//glRotatef(m_rotation[1],0.0f,1.0f,0.0f);
-	//glRotatef(m_rotation[2],0.0f,0.0f,1.0f);
 	glTranslatef(m_position[0], m_position[1], m_position[2]);
 
 	glLightfv(GL_LIGHT0, GL_POSITION, m_position);
