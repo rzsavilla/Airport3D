@@ -18,11 +18,13 @@ void Model::draw() {
 	glPushMatrix();
 
 	//Transformations
+	//Translate to position
 	glTranslatef(m_vPosition.getX() + m_vOrigin.getX(),m_vPosition.getY() + m_vOrigin.getY(),m_vPosition.getZ() + m_vOrigin.getZ());
-	glRotatef(m_vRotation.getX(),1.0f,0.0f,0.0f);
+	glRotatef(m_vRotation.getX(),1.0f,0.0f,0.0f);				//Rotate on origin
 	glRotatef(m_vRotation.getY(),0.0f,1.0f,0.0f);
 	glRotatef(m_vRotation.getZ(),0.0f,0.0f,1.0f);
-	glScalef(m_vScale.getX(),m_vScale.getY(),m_vScale.getZ());
+	glScalef(m_vScale.getX(),m_vScale.getY(),m_vScale.getZ());	//Scale on origin
+	//Move to origin
 	glTranslatef(m_vPosition.getX() - m_vOrigin.getX(),m_vPosition.getY() - m_vOrigin.getY(),m_vPosition.getZ() - m_vOrigin.getZ());
 	
 	// Active and specify pointer to vertex array

@@ -1,62 +1,69 @@
+/*!	\file Scene.h
+	\class Scene
+	\brief Loads, stores, updates and draws objects into the world
+*/
+
 #ifndef SCENE_H
 #define SCENE_H
 
 #include <string>
 #include <vector>
 
+#include "Drawable.h"
 #include "ModelReader.h"
 #include "ModelData.h"
 #include "Model.h"
 #include "TextureLoader.h"
-#include "Drawable.h"
 #include "Camera.h"
 #include "Light.h"
 
-const string sEndLine = " />";
-const char cEndLine = '/>';
-const string cComment = "#";
+
 
 class Scene: public Drawable {
 private:
-	bool m_bModelDataLoaded;
-	bool m_bTexturesLoaded;
+	bool m_bModelDataLoaded;			//!< Flag to check that all model data have been loaded
+	bool m_bTexturesLoaded;				//!< Flag to check that all textures have been loaded
 private:
-	std::vector<std::pair<int,GLuint>> m_viTextures;	
-	std::vector<std::pair<int,ModelData>> m_vModelData;
-	std::vector<std::pair<int,Model>> m_vModels;
+	std::vector<std::pair<int,GLuint>> m_viTextures;		//!< Stores object id and texture data
+	std::vector<std::pair<int,ModelData>> m_vModelData;		//!< Stores object id and model data object
+	std::vector<std::pair<int,Model>> m_vModels;			//!< Stores object id and model object
+	std::vector<std::pair<int,Light>> m_vLights;			//!< Stores object id and light object
 	std::string m_sFilename;				//!< File location of .txt file
-	GLuint& getTexture(int id);
-	ModelData& getModelData(int id);
-	Light light;
+	GLuint& getTexture(int id);				//!< Returns texture
+	ModelData& getModelData(int id);		//!< Return model data
 private:
-	unsigned int m_uiCamera;				//!< Index for camera to draw/use
+	unsigned int m_uiCamera;								//!< Index for camera to draw/use
 	std::vector<std::pair<int,Camera>> m_vCamera;			//!< Store Camera
 private:
-	std::string m_sSceneBaseDir;
-	std::string m_sModelBaseDir;
-	std::string m_sTextureBaseDir;
-	void loadModelData(istringstream& iss);
-	void loadTexture(istringstream& iss);
-	void loadCamera(istringstream& iss);
-	void loadModel(istringstream& iss);
-	void readQuotes(istringstream& iss, int& value);
-	void readQuotes(istringstream& iss, float& value);
-	void readQuotes(istringstream& iss, std::string& value);
+	//Scene parser
+	const string k_sComment;
+
+	std::string m_sSceneBaseDir;								//!< Location of scene files
+	std::string m_sModelBaseDir;								//!< Location of model files
+	std::string m_sTextureBaseDir;								//!< Location of texture files
+	void loadModelData(istringstream& iss);						//!< Read model data and store into vector
+	void loadTexture(istringstream& iss);						//!< Read texture and store into vector
+	void loadLight(istringstream& iss);							//!< Read light and store into vector
+	void loadCamera(istringstream& iss);						//!< Read camera and store into vector
+	void loadModel(istringstream& iss);							//!< Read model and store into vector
+	void readQuotes(istringstream& iss, int& value);			//!< Read and store in value into int
+	void readQuotes(istringstream& iss, float& value);			//!< Read and store float value into float
+	void readQuotes(istringstream& iss, std::string& value);	//!< Read and store string value into string
 	void removeReturn(istringstream& iss);						//!< Read away "\n"
 	void removeTab(istringstream& iss);							//!< Read away \t"
 public:
-	Scene();
-	Scene(std::string filename);
+	Scene();							//!< Default constructor
+	Scene(std::string filename);		//!< Construcor loads scene
 
 	/*! Loads a scene from a file, 
 		including models
 	*/
-	void loadScene(std::string filename);
-	void reset();				//!< Reset the scene, resets position/orientation of all models
-	void update(float h);
-	void draw();				//Draw models
+	void loadScene(std::string filename);	//!< Will open and parse scene file
+	void reset();							//!< Reset the scene, resets position/orientation of all models
+	void update(float h);					//!< update all scene objects
+	void draw();							//!< Draw all scene objects
 
-	Camera* getCamera();
+	Camera* getCamera();					//!< Return current camera being drawn
 };
 
 #endif

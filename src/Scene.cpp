@@ -1,19 +1,25 @@
 #include "Scene.h"
 
-Scene::Scene() {
+Scene::Scene()
+	: k_sComment("#")
+{
+	//Set default values
 	m_sSceneBaseDir = "scene/";
 	m_sModelBaseDir = "models/";
 	m_sTextureBaseDir = "images/";
 	m_uiCamera = 0;
 }
 
-Scene::Scene(std::string filename) {
+Scene::Scene(std::string filename) 
+	: k_sComment("#")
+{
+	//Set default values
 	m_sSceneBaseDir = "scene/";
 	m_sModelBaseDir = "models/";
 	m_sTextureBaseDir = "images/";
 	m_uiCamera = 0;
 
-	loadScene(filename);
+	loadScene(filename);	//load scene
 }
 
 void Scene::loadScene(std::string filename) {
@@ -37,7 +43,7 @@ void Scene::loadScene(std::string filename) {
 		sToken = "";
 		
 		iss >> sToken;
-		if (sToken == cComment) {
+		if (sToken == k_sComment) {
 			continue;					//Ignore comment comment end is '\>'
 		}
 		else if (sToken == "<texture") {
@@ -47,6 +53,10 @@ void Scene::loadScene(std::string filename) {
 		else if (sToken == "<modeldata") {
 			//std::cout << "ModelData found\n";
 			loadModelData(iss);
+		}
+		else if (sToken == "<light") {
+			//std::cout << "light found\n";
+			loadLight(iss);
 		}
 		else if (sToken == "<camera") {
 			loadCamera(iss);
@@ -120,13 +130,104 @@ void Scene::loadModelData(istringstream& iss) {
 	std::cout << "Failed\t";
 }
 
+void Scene::loadLight(istringstream& iss) {
+	std::string sAttribute;
+	int id = 0;
+	//Default values
+	GLfloat fLight[4] = { 1.0f, 1.0f, 1.0f, 1.0f};			//White light			
+	GLfloat fNoLight[4] = { 0.0f, 0.0f, 0.0f, 0.0f};				
+	GLfloat fAmbient[4] = { 0.1f, 0.1f, 0.1f, 1.0f};	
+	GLfloat fPosition[4] = { 0.0f, 1000.0f, 0.0f, 0.0f};			
+	GLfloat fRotation[3]  = { 0.0f, 0.0f, 0.0f};				
+	
+	Light light;
+
+	while (!iss.eof()) {
+		removeReturn(iss);
+		removeTab(iss);
+		getline(iss,sAttribute, '=');
+		if (sAttribute == "id") {
+			readQuotes(iss, id);				//Read attribute value
+		}
+		else if (sAttribute == "lightnumber") {
+			int i;
+			GLenum iLightNumber = GL_LIGHT0;	//Default
+			readQuotes(iss,i);
+			switch (i)
+			{
+			case 0:
+				iLightNumber = GL_LIGHT0;
+				break;
+			case 1:
+				iLightNumber = GL_LIGHT1;
+				break;
+			case 2:
+				iLightNumber = GL_LIGHT2;
+				break;
+			case 3:
+				iLightNumber = GL_LIGHT3;
+				break;
+			case 4:
+				iLightNumber = GL_LIGHT4;
+				break;
+			case 5:
+				iLightNumber = GL_LIGHT5;
+				break;
+			case 6:
+				iLightNumber = GL_LIGHT6;
+				break;
+			case 7:
+				iLightNumber = GL_LIGHT7;
+				break;
+			default:
+				break;
+			}
+			light.setLightNum(iLightNumber);
+		}
+		// Read Position
+		else if (sAttribute == "posx") { readQuotes(iss,fPosition[0]); }
+		else if (sAttribute == "posy") { readQuotes(iss,fPosition[1]); }
+		else if (sAttribute == "posz") { readQuotes(iss,fPosition[2]); }
+		// Read Rotation
+		else if (sAttribute == "rotx") { readQuotes(iss,fRotation[0]); }
+		else if (sAttribute == "roty") { readQuotes(iss,fRotation[1]); }
+		else if (sAttribute == "rotz") { readQuotes(iss,fRotation[2]); }
+		// Read Light Colour
+		else if (sAttribute == "lightR") { readQuotes(iss,fLight[0]); }
+		else if (sAttribute == "lightG") { readQuotes(iss,fLight[1]); }
+		else if (sAttribute == "lightB") { readQuotes(iss,fLight[2]); }
+		else if (sAttribute == "lightA") { readQuotes(iss,fLight[3]); }
+		// Read No Light colour
+		else if (sAttribute == "nolightR") { readQuotes(iss,fNoLight[0]); }
+		else if (sAttribute == "nolightG") { readQuotes(iss,fNoLight[1]); }
+		else if (sAttribute == "nolightB") { readQuotes(iss,fNoLight[2]); }
+		else if (sAttribute == "nolightA") { readQuotes(iss,fNoLight[3]); }
+		// Read Ambient light
+		else if (sAttribute == "ambientR") { readQuotes(iss,fAmbient[0]); }
+		else if (sAttribute == "ambientG") { readQuotes(iss,fAmbient[1]); }
+		else if (sAttribute == "ambientB") { readQuotes(iss,fAmbient[2]); }
+		else if (sAttribute == "ambientA") { readQuotes(iss,fAmbient[3]); }
+
+	}
+	//Set transformation
+	light.setPosition(fPosition[0], fPosition[1], fPosition[2]);
+	light.setRotation(fRotation[0], fRotation[1], fRotation[2]);
+
+	//Set light properties
+	light.setLightColour(fLight[0], fLight[1], fLight[2] , fLight[3]);
+	light.setNoLightColour(fNoLight[0], fNoLight[1], fNoLight[2] , fNoLight[3]);
+	light.setLightModelAmbient(fAmbient[0], fAmbient[1], fAmbient[2], fAmbient[3]);
+	
+	//Add light to vector
+	m_vLights.push_back(std::pair<int,Light>(id,light));	
+}
+
 void Scene::loadCamera(istringstream& iss) {
 	int id = 0;
 	std::string sAttribute;
 
 	float fPosition[3] = {0.0f,0.0f,0.0f};		//x,y,z
 	float fRotation[3] = {0.0f,0.0f,0.0f};		//x,y,z
-
 	
 	while (!iss.eof()) {
 		removeReturn(iss);
@@ -308,14 +409,16 @@ void Scene::draw() {
 
 	//Draw Camera
 	for (auto it = m_vCamera.begin(); it != m_vCamera.end(); ++it) {
+		//Able to switch to different cameras
 		if (it->first == m_uiCamera) {
 			it->second.draw();
-			light.setRotation(it->second.getRotation().getX(),it->second.getRotation().getY(),it->second.getRotation().getZ());
 		}
 	}
-	glPushMatrix();
-	light.draw();
-	glPopMatrix();
+
+	//Draw Lights
+	for (auto it = m_vLights.begin(); it != m_vLights.end(); ++it) {
+		it->second.draw();
+	}
 
 	//Draw Models
 	for (auto it = m_vModels.begin(); it != m_vModels.end(); ++it) {

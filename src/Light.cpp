@@ -3,15 +3,25 @@
 
 Light::Light() {
 	//Default light values
-	setPostion(1.0f,500.0f,1.0f);
+	setPosition(1.0f,500.0f,1.0f);
 	setRotation(1.0f,1.0f,1.0f);
 	setLightColour(1.0f,1.0f,1.0f,1.0f);
 	setNoLightColour(0.0f,0.0f,0.0f,1.0f);
 	setLightModelAmbient(0.3f, 0.3f, 0.3f, 1.0);
-	m_LightNumber = GL_LIGHT0;
+	m_lightNumber = GL_LIGHT0;
 }
 
-void Light::setPostion(float x, float y, float z) {
+void Light::setLightNum(GLenum lightNumber) {
+	//Ensure enum is valid
+	if (lightNumber == GL_LIGHT0 || lightNumber == GL_LIGHT1 || lightNumber == GL_LIGHT2 || lightNumber == GL_LIGHT3 || 
+		lightNumber == GL_LIGHT4 || lightNumber == GL_LIGHT5 || lightNumber == GL_LIGHT6 || lightNumber == GL_LIGHT7) {
+		m_lightNumber = lightNumber;
+	} else {
+		m_lightNumber = GL_LIGHT0;	//Default light
+	}	
+}
+
+void Light::setPosition(float x, float y, float z) {
 	m_position[0] = x;
 	m_position[1] = y;
 	m_position[2] = z;
@@ -43,20 +53,32 @@ void Light::setLightModelAmbient(float R, float G, float B, float A) {
 	lightModelAmbient[3] = A;
 }
 
+float Light::getPosX(){ return m_position[0]; }
+float Light::getPosY(){ return m_position[1]; }
+float Light::getPosZ(){ return m_position[2]; }
+
+float Light::getRotX(){ return m_rotation[0]; }
+float Light::getRotY(){ return m_rotation[1]; }
+float Light::getRotZ(){ return m_rotation[2]; }
+
 void Light::draw() {
 	//Apply transformations
 	glPushMatrix();
-	glTranslatef(m_position[0], m_position[1], m_position[2]);
-
+	glTranslatef(m_position[0], m_position[1], m_position[2]);		// Move to position
+	glRotatef(m_rotation[0],1.0f, 0.0f,0.0f);							//Rotate around origin
+	glRotatef(m_rotation[1],0.0f, 1.0f,0.0f);
+	glRotatef(m_rotation[2],0.0f, 0.0f,1.0f);
+	glTranslatef(-m_position[0], -m_position[1], -m_position[2]);	// Move to origin
 	//Set Light values
-	glLightfv(m_LightNumber, GL_POSITION, m_position);
-	glLightfv(m_LightNumber, GL_DIFFUSE, lightColour);
-	glLightfv(m_LightNumber, GL_SPECULAR, lightColour);
-	glLightfv(m_LightNumber, GL_AMBIENT, noLight);			// no ambient light from the source
+	glLightfv(m_lightNumber, GL_POSITION, m_position);
+	glLightfv(m_lightNumber, GL_DIFFUSE, lightColour);
+	glLightfv(m_lightNumber, GL_SPECULAR, lightColour);
+	glLightfv(m_lightNumber, GL_AMBIENT, noLight);			// no ambient light from the source
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lightModelAmbient);	// use global ambient instead
 
 	glEnable(GL_LIGHTING);
-	glEnable(m_LightNumber);
+	glEnable(m_lightNumber);
+	glPopAttrib();
 
 	glPopMatrix;
 }
