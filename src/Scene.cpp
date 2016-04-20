@@ -498,9 +498,9 @@ void Scene::draw() {
 	}
 
 	//Draw Lights
-	for (auto it = m_vLights.begin(); it != m_vLights.end(); ++it) {
-		it->second.draw();
-	}
+	//for (auto it = m_vLights.begin(); it != m_vLights.end(); ++it) {
+	//	it->second.draw();
+	//}
 
 	//Draw Models
 	for (auto it = m_vModels.begin(); it != m_vModels.end(); ++it) {
