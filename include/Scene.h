@@ -31,6 +31,7 @@ private:
 	std::string m_sFilename;				//!< File location of .txt file
 	GLuint& getTexture(int id);				//!< Returns texture
 	ModelData& getModelData(int id);		//!< Return model data
+	Material& getMaterial(int id);			//!< Return material
 private:
 	unsigned int m_uiCamera;								//!< Index for camera to draw/use
 	std::vector<std::pair<int,Camera>> m_vCamera;			//!< Store Camera

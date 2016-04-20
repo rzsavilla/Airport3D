@@ -5,7 +5,11 @@
 
 class Light {
 private:
-	GLfloat lightColour[4];						//!< Stores colour values
+	GLfloat lightColour[4];
+	GLfloat ma_fAmbient[4];		
+	GLfloat ma_fDiffuse[4];			
+	GLfloat ma_fSpecular[4];		
+
 	GLfloat noLight[4];							//!< Stores colour values
 	GLfloat lightModelAmbient[4];				//!< Stores colour values ambient light	
 	GLfloat m_position[4];						//!< Stores the lights position

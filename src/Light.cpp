@@ -62,6 +62,8 @@ float Light::getRotY(){ return m_rotation[1]; }
 float Light::getRotZ(){ return m_rotation[2]; }
 
 void Light::draw() {
+	glEnable(GL_LIGHTING);
+	glEnable(m_lightNumber);
 	//Apply transformations
 	glPushMatrix();
 	glTranslatef(m_position[0], m_position[1], m_position[2]);		// Move to position
@@ -69,16 +71,16 @@ void Light::draw() {
 	glRotatef(m_rotation[1],0.0f, 1.0f,0.0f);
 	glRotatef(m_rotation[2],0.0f, 0.0f,1.0f);
 	glTranslatef(-m_position[0], -m_position[1], -m_position[2]);	// Move to origin
+
+	GLfloat spec[4] = {1.0,1.0,1.0, 1.0f};
+	GLfloat diff[4] = {1.0,1.0,1.0, 1.0f};
+	GLfloat ambient[4] = {1.0,1.0,1.0, 1.0f};
 	//Set Light values
 	glLightfv(m_lightNumber, GL_POSITION, m_position);
-	glLightfv(m_lightNumber, GL_DIFFUSE, lightColour);
-	glLightfv(m_lightNumber, GL_SPECULAR, lightColour);
-	glLightfv(m_lightNumber, GL_AMBIENT, noLight);			// no ambient light from the source
+	glLightfv(m_lightNumber, GL_DIFFUSE, diff);
+	glLightfv(m_lightNumber, GL_SPECULAR, spec);
+	glLightfv(m_lightNumber, GL_AMBIENT, ambient);			// no ambient light from the source
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lightModelAmbient);	// use global ambient instead
-
-	glEnable(GL_LIGHTING);
-	glEnable(m_lightNumber);
-	glPopAttrib();
 
 	glPopMatrix;
 }

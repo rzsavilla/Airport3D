@@ -79,7 +79,7 @@ void Scene::loadScene(std::string filename) {
 void Scene::loadTexture(istringstream& iss) {
 	int id = 0;
 	std::string sAttribute;
-	std::string sFilename;
+	std::string sFilename = "";
 
 	while (!iss.eof()) {	//While not end of line
 		removeReturn(iss);
@@ -107,6 +107,7 @@ void Scene::loadTexture(istringstream& iss) {
 void Scene::loadMaterial(istringstream& iss) {
 	int id = 0;
 	std::string sAttribute;
+	std::string sFilename = "";
 
 	GLfloat fAmbient[4] = { 1.0f,1.0f,1.0f,1.0f };	
 	GLfloat fDiffuse[4] = { 0.0f,0.0f,0.0f,1.0f };
@@ -121,27 +122,29 @@ void Scene::loadMaterial(istringstream& iss) {
 		getline(iss,sAttribute, '=');
 		if (sAttribute == "id") {
 			readQuotes(iss, id);
+		} else if (sAttribute == "filename") {
+			readQuotes(iss, sFilename);
 		}
 		//Read material properties
 		else if (sAttribute == "ambientR") { readQuotes(iss, fAmbient[0]); }
 		else if (sAttribute == "ambientG") { readQuotes(iss, fAmbient[1]); }
 		else if (sAttribute == "ambientB") { readQuotes(iss, fAmbient[2]); }
-		else if (sAttribute == "ambientA") { readQuotes(iss, fAmbient[2]); }
+		else if (sAttribute == "ambientA") { readQuotes(iss, fAmbient[3]); }
 
 		else if (sAttribute == "diffuseR") { readQuotes(iss, fDiffuse[0]); }
 		else if (sAttribute == "diffuseG") { readQuotes(iss, fDiffuse[1]); }
 		else if (sAttribute == "diffuseB") { readQuotes(iss, fDiffuse[2]); }
-		else if (sAttribute == "diffuseA") { readQuotes(iss, fDiffuse[2]); }
+		else if (sAttribute == "diffuseA") { readQuotes(iss, fDiffuse[3]); }
 
 		else if (sAttribute == "specularR") { readQuotes(iss, fSpecular[0]); }
 		else if (sAttribute == "specularG") { readQuotes(iss, fSpecular[1]); }
 		else if (sAttribute == "specularB") { readQuotes(iss, fSpecular[2]); }
-		else if (sAttribute == "specularA") { readQuotes(iss, fSpecular[2]); }
+		else if (sAttribute == "specularA") { readQuotes(iss, fSpecular[3]); }
 
 		else if (sAttribute == "emissionR") { readQuotes(iss, fEmission[0]); }
 		else if (sAttribute == "emissionG") { readQuotes(iss, fEmission[1]); }
 		else if (sAttribute == "emissionB") { readQuotes(iss, fEmission[2]); }
-		else if (sAttribute == "emissionA") { readQuotes(iss, fEmission[0]); }
+		else if (sAttribute == "emissionA") { readQuotes(iss, fEmission[3]); }
 
 		else if (sAttribute == "shininess") { readQuotes(iss, fShininess); }
 	}
@@ -159,7 +162,7 @@ void Scene::loadMaterial(istringstream& iss) {
 void Scene::loadModelData(istringstream& iss) {
 	int id = 0;
 	std::string sAttribute;
-	std::string sFilename;
+	std::string sFilename = "";
 	while (!iss.eof()) {
 		removeReturn(iss);
 		removeTab(iss);
@@ -188,6 +191,7 @@ void Scene::loadModelData(istringstream& iss) {
 
 void Scene::loadLight(istringstream& iss) {
 	std::string sAttribute;
+	std::string sFilename = "";
 	int id = 0;
 	//Default values
 	GLfloat fLight[4] = { 1.0f, 1.0f, 1.0f, 1.0f};			//White light			
@@ -204,6 +208,8 @@ void Scene::loadLight(istringstream& iss) {
 		getline(iss,sAttribute, '=');
 		if (sAttribute == "id") {
 			readQuotes(iss, id);				//Read attribute value
+		} else if (sAttribute == "filename") {
+			readQuotes(iss,sFilename);
 		}
 		else if (sAttribute == "lightnumber") {
 			int i;
@@ -281,6 +287,7 @@ void Scene::loadLight(istringstream& iss) {
 void Scene::loadCamera(istringstream& iss) {
 	int id = 0;
 	std::string sAttribute;
+	std::string sFilename = "";
 
 	float fPosition[3] = {0.0f,0.0f,0.0f};		//x,y,z
 	float fRotation[3] = {0.0f,0.0f,0.0f};		//x,y,z
@@ -326,6 +333,8 @@ void Scene::loadCamera(istringstream& iss) {
 void Scene::loadModel(istringstream& iss) {
 	int id = 0;
 	std::string sAttribute;
+	std::string sFilename = "";
+	Model model;
 
 	int iModelDataID = 0;
 	int iTextureID = 0;
@@ -340,6 +349,9 @@ void Scene::loadModel(istringstream& iss) {
 		
 		if (sAttribute == "id") {
 			readQuotes(iss, id);					//Read attribute value
+		} 
+		else if (sAttribute == "filename") {
+			readQuotes(iss, sFilename);	
 		}
 		else if (sAttribute == "dataID") {
 			readQuotes(iss,iModelDataID);			//Read attribute value
@@ -347,47 +359,41 @@ void Scene::loadModel(istringstream& iss) {
 		else if (sAttribute == "textureID") {
 			readQuotes(iss,iTextureID);
 		} 
-		else if (sAttribute == "posx") {
-			readQuotes(iss,fPosition[0]);
+		else if (sAttribute == "materialID") {
+			int i;
+			readQuotes(iss,i);
+			model.setMaterial(getMaterial(i));		//Set Material
 		}
-		else if (sAttribute == "posy") {
-			readQuotes(iss,fPosition[1]);
-		}
-		else if (sAttribute == "posz") {
-			readQuotes(iss,fPosition[2]);
-		}
-		else if (sAttribute == "rotx") {
-			readQuotes(iss,fRotation[0]);
-		}
-		else if (sAttribute == "roty") {
-			readQuotes(iss,fRotation[1]);
-		}
-		else if (sAttribute == "rotz") {
-			readQuotes(iss,fRotation[2]);
-		}
-		else if (sAttribute == "scalex") {
-			readQuotes(iss,fScale[0]);
-		}
-		else if (sAttribute == "scaley") {
-			readQuotes(iss,fScale[1]);
-		}
-		else if (sAttribute == "scalez") {
-			readQuotes(iss,fScale[2]);
-		}
+		//Read Position
+		else if (sAttribute == "posx") { readQuotes(iss,fPosition[0]); }
+		else if (sAttribute == "posy") { readQuotes(iss,fPosition[1]); }
+		else if (sAttribute == "posz") { readQuotes(iss,fPosition[2]); }
+		//Read Rotation
+		else if (sAttribute == "rotx") { readQuotes(iss,fRotation[0]); }
+		else if (sAttribute == "roty") { readQuotes(iss,fRotation[1]); }
+		else if (sAttribute == "rotz") { readQuotes(iss,fRotation[2]); }
+		//Read Scale
+		else if (sAttribute == "scalex") { readQuotes(iss,fScale[0]); }
+		else if (sAttribute == "scaley") { readQuotes(iss,fScale[1]); }
+		else if (sAttribute == "scalez") { readQuotes(iss,fScale[2]); } 
 	}
 
 	std::cout << "Loading Model: " << id << "\t";
-	Model model;
+	
 	ModelData* modelData = &getModelData(iModelDataID);		//Set ModelData and Texture
 	modelData->setTexture(getTexture(iTextureID));
 
+	//Set Transformation
 	model.setPosition(fPosition[0],fPosition[1],fPosition[2]);
 	model.setRotation(fRotation[0],fRotation[1],fRotation[2]);
 	model.setScale(fScale[0],fScale[1],fScale[2]);
+
 	model.setModel(getModelData(iModelDataID));
+
+	//Add model to vector
 	std::pair<int,Model> data(id,model);
-	m_vModels.push_back(data);							//Add model to vector
-	std::cout << "Created\t";
+	m_vModels.push_back(data);							
+	std::cout << "Created " << sFilename << "\t";
 }
 
 void Scene::readQuotes(istringstream& iss, int& value) {
@@ -451,8 +457,16 @@ ModelData& Scene::getModelData(int id) {
 	return m_vModelData.at(0).second;	//Return default/starting model
 }
 
+Material& Scene::getMaterial(int id) {
+	for (std::vector<std::pair<int,Material>>::iterator it = m_vMaterial.begin(); it != m_vMaterial.end(); ++it) {
+		if (it->first == id) {
+			return it->second;		//Return material
+		}
+	}
+	return m_vMaterial.at(0).second;	//Return default material
+}
+
 void Scene::update(float h) {
-	
 	//Update Active camera
 	for (auto it = m_vCamera.begin(); it != m_vCamera.end(); ++it) {
 		if (it->first == m_uiCamera) {

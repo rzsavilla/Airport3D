@@ -44,6 +44,6 @@ void Material::set() {
 	glMaterialfv(GL_FRONT,GL_AMBIENT, ma_fAmbient);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, ma_fDiffuse);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, ma_fSpecular);
-	glMaterialfv(GL_FRONT, GL_EMISSION, ma_fEmission);
+	//glMaterialfv(GL_FRONT, GL_EMISSION, ma_fEmission);
 	glMaterialf(GL_FRONT, GL_SHININESS, m_fShininess);
 }

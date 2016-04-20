@@ -11,6 +11,8 @@
 
 class Model: public Drawable, public Transformable{
 private:
+	bool m_bEnableTexture;
+	bool m_bEnableLight;
 	bool m_bModelSet;			
 	bool m_bHasMaterial;
 	ModelData *m_ModelData; 
@@ -23,6 +25,8 @@ public:
 	~Model();	//!< Destructor
 	void setModel(ModelData &model);
 	void setMaterial(Material& material);
+	void enableTexture(bool b);
+	void enableLight(bool b);
 
 	void draw();
 };
