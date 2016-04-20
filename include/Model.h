@@ -7,11 +7,14 @@
 
 #include "Vector3D.h"
 #include "Transformable.h"
+#include "Material.h"
 
-class Model: public Drawable, public Transformable {
+class Model: public Drawable, public Transformable{
 private:
+	bool m_bModelSet;			
+	bool m_bHasMaterial;
 	ModelData *m_ModelData; 
-	bool m_bModelSet;
+	Material *m_Material;
 public:
 	Model();	//!<Default Constructor
 	Model(string filename);						//!< Constructor sets model to be loaded
@@ -19,6 +22,7 @@ public:
 	
 	~Model();	//!< Destructor
 	void setModel(ModelData &model);
+	void setMaterial(Material& material);
 
 	void draw();
 };

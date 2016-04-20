@@ -2,6 +2,7 @@
 
 Model::Model() {
 	m_bModelSet = false;
+	m_bHasMaterial = false;
 }
 
 Model::~Model()  {
@@ -11,11 +12,20 @@ Model::~Model()  {
 void Model::setModel(ModelData &model) {
 	m_ModelData = &model;
 	m_bModelSet = true;
-	//setOrigin(m_ModelData->getSize() / 2);	// Default origin will be centre of object
+}
+
+void Model::setMaterial(Material& material) {
+	m_Material = &material;
+	m_bHasMaterial = true;
 }
 
 void Model::draw() {
 	glPushMatrix();
+
+	//Set Material
+	if (m_bHasMaterial) {
+		m_Material->set();
+	}
 
 	//Transformations
 	//Translate to position
@@ -63,6 +73,7 @@ void Model::draw() {
 	}
 
 	glDisableClientState(GL_VERTEX_ARRAY);
-
+	
+	glPopAttrib();	//Pop material 
 	glPopMatrix();
 }
