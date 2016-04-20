@@ -50,6 +50,10 @@ void Scene::loadScene(std::string filename) {
 			//std::cout << "Texture found\n";
 			loadTexture(iss);
 		} 
+		else if (sToken == "<material") {
+			//std::cout << "Material found\n";
+			loadMaterial(iss);
+		}
 		else if (sToken == "<modeldata") {
 			//std::cout << "ModelData found\n";
 			loadModelData(iss);
@@ -98,6 +102,58 @@ void Scene::loadTexture(istringstream& iss) {
 		loader.LoadBMP(m_sTextureBaseDir+sFilename,data.second);
 		m_viTextures.push_back(data);
 	}
+}
+
+void Scene::loadMaterial(istringstream& iss) {
+	int id = 0;
+	std::string sAttribute;
+
+	GLfloat fAmbient[4] = { 1.0f,1.0f,1.0f,1.0f };	
+	GLfloat fDiffuse[4] = { 0.0f,0.0f,0.0f,1.0f };
+	GLfloat fSpecular[4] = { 0.0f,0.0f,0.0f,1.0f };
+	GLfloat fEmission[4] = { 0.0f,0.0f,0.0f,1.0f };
+	GLfloat fShininess = 0.0f;
+	Material material;
+
+	while (!iss.eof()) {	//While not end of line
+		removeReturn(iss);
+		removeTab(iss);
+		getline(iss,sAttribute, '=');
+		if (sAttribute == "id") {
+			readQuotes(iss, id);
+		}
+		//Read material properties
+		else if (sAttribute == "ambientR") { readQuotes(iss, fAmbient[0]); }
+		else if (sAttribute == "ambientG") { readQuotes(iss, fAmbient[1]); }
+		else if (sAttribute == "ambientB") { readQuotes(iss, fAmbient[2]); }
+		else if (sAttribute == "ambientA") { readQuotes(iss, fAmbient[2]); }
+
+		else if (sAttribute == "diffuseR") { readQuotes(iss, fDiffuse[0]); }
+		else if (sAttribute == "diffuseG") { readQuotes(iss, fDiffuse[1]); }
+		else if (sAttribute == "diffuseB") { readQuotes(iss, fDiffuse[2]); }
+		else if (sAttribute == "diffuseA") { readQuotes(iss, fDiffuse[2]); }
+
+		else if (sAttribute == "specularR") { readQuotes(iss, fSpecular[0]); }
+		else if (sAttribute == "specularG") { readQuotes(iss, fSpecular[1]); }
+		else if (sAttribute == "specularB") { readQuotes(iss, fSpecular[2]); }
+		else if (sAttribute == "specularA") { readQuotes(iss, fSpecular[2]); }
+
+		else if (sAttribute == "emissionR") { readQuotes(iss, fEmission[0]); }
+		else if (sAttribute == "emissionG") { readQuotes(iss, fEmission[1]); }
+		else if (sAttribute == "emissionB") { readQuotes(iss, fEmission[2]); }
+		else if (sAttribute == "emissionA") { readQuotes(iss, fEmission[0]); }
+
+		else if (sAttribute == "shininess") { readQuotes(iss, fShininess); }
+	}
+	//Set material properties
+	material.setAmbient(fAmbient[0], fAmbient[1], fAmbient[2], fAmbient[3]);
+	material.setDiffuse(fDiffuse[0], fDiffuse[1], fDiffuse[2], fDiffuse[3]);
+	material.setSpecular(fSpecular[0], fSpecular[1], fSpecular[2], fSpecular[3]);
+	material.setEmission(fEmission[0], fEmission[1], fEmission[2], fEmission[3]);
+	material.setShininess(fShininess);
+
+	//Add Matrial into vector
+	m_vMaterial.push_back(std::pair<int,Material>(id, material));
 }
 
 void Scene::loadModelData(istringstream& iss) {

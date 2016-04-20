@@ -17,8 +17,6 @@
 #include "Camera.h"
 #include "Light.h"
 
-
-
 class Scene: public Drawable {
 private:
 	bool m_bModelDataLoaded;			//!< Flag to check that all model data have been loaded
@@ -26,8 +24,10 @@ private:
 private:
 	std::vector<std::pair<int,GLuint>> m_viTextures;		//!< Stores object id and texture data
 	std::vector<std::pair<int,ModelData>> m_vModelData;		//!< Stores object id and model data object
+	std::vector<std::pair<int,Material>> m_vMaterial;		//!< Stores object id and Material object
 	std::vector<std::pair<int,Model>> m_vModels;			//!< Stores object id and model object
 	std::vector<std::pair<int,Light>> m_vLights;			//!< Stores object id and light object
+	
 	std::string m_sFilename;				//!< File location of .txt file
 	GLuint& getTexture(int id);				//!< Returns texture
 	ModelData& getModelData(int id);		//!< Return model data
@@ -43,6 +43,7 @@ private:
 	std::string m_sTextureBaseDir;								//!< Location of texture files
 	void loadModelData(istringstream& iss);						//!< Read model data and store into vector
 	void loadTexture(istringstream& iss);						//!< Read texture and store into vector
+	void loadMaterial(istringstream& iss);						//!< Read material and store into vector
 	void loadLight(istringstream& iss);							//!< Read light and store into vector
 	void loadCamera(istringstream& iss);						//!< Read camera and store into vector
 	void loadModel(istringstream& iss);							//!< Read model and store into vector
