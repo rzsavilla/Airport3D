@@ -3,11 +3,13 @@
 
 Light::Light() {
 	//Default light values
-	setPosition(1.0f,500.0f,1.0f);
-	setRotation(1.0f,1.0f,1.0f);
-	setLightColour(1.0f,1.0f,1.0f,1.0f);
-	setNoLightColour(0.0f,0.0f,0.0f,1.0f);
-	setLightModelAmbient(0.3f, 0.3f, 0.3f, 1.0);
+	setPosition(0.0f,500.0f,0.0f);
+	setSpotDirection(0.0f,0.0f,-1.0f);
+	setAmbient(0.0f,0.0f,0.0f,1.0f);
+	setDiffuse(1.0f,1.0f,1.0f,1.0f);
+	setSpecular(1.0f, 1.0f, 1.0f, 1.0);
+	setSpotExponent(0.0f);
+	setSpotCutOff(180.0f);
 	m_lightNumber = GL_LIGHT0;
 }
 
@@ -21,66 +23,62 @@ void Light::setLightNum(GLenum lightNumber) {
 	}	
 }
 
+void Light::setAmbient(float R, float G, float B, float A) {
+	ma_fAmbient[0] = R;
+	ma_fAmbient[1] = G;
+	ma_fAmbient[2] = B;
+	ma_fAmbient[3] = A;
+}
+void Light::setDiffuse(float R, float G, float B, float A) {
+	ma_fDiffuse[0] = R;
+	ma_fDiffuse[1] = G;
+	ma_fDiffuse[2] = B;
+	ma_fDiffuse[3] = A;
+}
+void Light::setSpecular(float R, float G, float B, float A) {
+	ma_fSpecular[0] = R;
+	ma_fSpecular[1] = G;
+	ma_fSpecular[2] = B;
+	ma_fSpecular[3] = A;
+}
+
 void Light::setPosition(float x, float y, float z) {
-	m_position[0] = x;
-	m_position[1] = y;
-	m_position[2] = z;
-	m_position[3] = 0.5;
+	ma_position[0] = x;
+	ma_position[1] = y;
+	ma_position[2] = z;
+	ma_position[3] = 0.5;
+}
+void Light::setSpotDirection(float x, float y, float z) {
+	ma_fSpotDirection[0] = x;
+	ma_fSpotDirection[1] = y;
+	ma_fSpotDirection[2] = z;
+}
+void Light::setSpotExponent(float f) {
+	ma_fSpotExponent[0] = f;
+}
+void Light::setSpotCutOff(float f) {
+	ma_fSpotCutoff[0] = f;
 }
 
-void Light::setRotation(float x, float y, float z) {
-	m_rotation[0] = x;
-	m_rotation[1] = y;
-	m_rotation[2] = z;
-}
-
-void Light::setLightColour(float R, float G, float B, float A) {
-	lightColour[0] = R;
-	lightColour[1] = G;
-	lightColour[2] = B;
-	lightColour[3] = A;
-}
-void Light::setNoLightColour(float R, float G, float B, float A) {
-	noLight[0] = R;
-	noLight[1] = G;
-	noLight[2] = B;
-	noLight[3] = A;
-}
-void Light::setLightModelAmbient(float R, float G, float B, float A) {
-	lightModelAmbient[0] = R;
-	lightModelAmbient[1] = G;
-	lightModelAmbient[2] = B;
-	lightModelAmbient[3] = A;
-}
-
-float Light::getPosX(){ return m_position[0]; }
-float Light::getPosY(){ return m_position[1]; }
-float Light::getPosZ(){ return m_position[2]; }
-
-float Light::getRotX(){ return m_rotation[0]; }
-float Light::getRotY(){ return m_rotation[1]; }
-float Light::getRotZ(){ return m_rotation[2]; }
+float Light::getPosX(){ return ma_position[0]; }
+float Light::getPosY(){ return ma_position[1]; }
+float Light::getPosZ(){ return ma_position[2]; }
 
 void Light::draw() {
 	glEnable(GL_LIGHTING);
 	glEnable(m_lightNumber);
 	//Apply transformations
 	glPushMatrix();
-	glTranslatef(m_position[0], m_position[1], m_position[2]);		// Move to position
-	glRotatef(m_rotation[0],1.0f, 0.0f,0.0f);							//Rotate around origin
-	glRotatef(m_rotation[1],0.0f, 1.0f,0.0f);
-	glRotatef(m_rotation[2],0.0f, 0.0f,1.0f);
-	glTranslatef(-m_position[0], -m_position[1], -m_position[2]);	// Move to origin
+	glTranslatef(ma_position[0], ma_position[1], ma_position[2]);		// Move to position
 
-	GLfloat spec[4] = {1.0,1.0,1.0, 1.0f};
-	GLfloat diff[4] = {1.0,1.0,1.0, 1.0f};
-	GLfloat ambient[4] = {1.0,1.0,1.0, 1.0f};
 	//Set Light values
-	glLightfv(m_lightNumber, GL_POSITION, m_position);
-	glLightfv(m_lightNumber, GL_DIFFUSE, diff);
-	glLightfv(m_lightNumber, GL_SPECULAR, spec);
-	glLightfv(m_lightNumber, GL_AMBIENT, ambient);			// no ambient light from the source
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lightModelAmbient);	// use global ambient instead
-
+	glLightfv(m_lightNumber, GL_AMBIENT, ma_fAmbient);
+	glLightfv(m_lightNumber, GL_DIFFUSE, ma_fDiffuse);
+	glLightfv(m_lightNumber, GL_SPECULAR, ma_fSpecular);
+	glLightfv(m_lightNumber, GL_POSITION, ma_position);
+	glLightfv(m_lightNumber, GL_SPOT_DIRECTION, ma_fSpotDirection);
+	glLightfv(m_lightNumber, GL_SPOT_EXPONENT, ma_fSpotExponent);
+	glLightfv(m_lightNumber, GL_SPOT_CUTOFF, ma_fSpotCutoff);
+	
 	glPopMatrix;
 }

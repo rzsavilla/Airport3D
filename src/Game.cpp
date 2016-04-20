@@ -31,7 +31,7 @@ Game::Game()
     // Setup a perspective projection
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
-   gluPerspective(45.0f, (float)m_kiWindowWidth/m_kiWindowHeight, 0.1f, 50000.f);
+   gluPerspective(45.0f, (float)m_kiWindowWidth/m_kiWindowHeight, 0.1f, 80000.f);
 
 	scene.loadScene("scene1.xml");
 	m_KeyPressSub.attach(scene.getCamera());

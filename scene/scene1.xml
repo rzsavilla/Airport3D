@@ -22,6 +22,10 @@
 	id="4" 
 	filename="challenger.bmp" 
 />
+<texture
+	id="5" 
+	filename="clouds.bmp" 
+/>
 
 # Material files \>
 <material 
@@ -34,22 +38,22 @@
 
 <material 
 	id="1" filename="dull"
-	ambientR="0.3" ambientG="0.3" ambientB="0.3" ambientA="1.0"
-	diffuseR="0.4" diffuseG="0.4" diffuseB="0.4" diffuseA="1.0"
+	ambientR="0.5" ambientG="0.5" ambientB="0.5" ambientA="1.0"
+	diffuseR="0.8" diffuseG="0.8" diffuseB="0.8" diffuseA="1.0"
 	specularR="0.0" specularG="0.0" specularB="0.0" specularA="1.0"
 	shininess="0.0"
 />
 
 <material 
-	id="2" filename="lessShiny"
-	ambientR="0.3" ambientG="0.3" ambientB="0.3" ambientA="1.0"
-	diffuseR="0.4" diffuseG="0.4" diffuseB="0.4" diffuseA="1.0"
+	id="2" filename="shiny"
+	ambientR="0.5" ambientG="0.5" ambientB="0.5" ambientA="1.0"
+	diffuseR="0.8" diffuseG="0.8" diffuseB="0.8" diffuseA="1.0"
 	specularR="0.7" specularG="0.7" specularB="0.7" specularA="1.0"
 	shininess="128.0"
 />
 
 <material 
-	id="3" filename="shiny"
+	id="3" filename="shiny2"
 	ambientR="0.3" ambientG="0.3" ambientB="0.3" ambientA="1.0"
 	diffuseR="0.5" diffuseG="0.5" diffuseB="0.5" diffuseA="1.0"
 	specularR="1.0" specularG="1.0" specularB="1.0" specularA="1.0"
@@ -59,7 +63,7 @@
 # ModelData files \>
 <modeldata 
 	id="0" 
-	filename="cube.obj" 
+	filename="sphere.obj" 
 />
 <modeldata 
 	id="1" 
@@ -69,11 +73,11 @@
 	id="2" 
 	filename="hangarBox.obj" 
 />
-<modeldata 
+# <modeldata 
 	id="3" 
 	filename="cessna.obj" 
 />
-<modeldata 
+# <modeldata 
 	id="4" 
 	filename="challenger.obj" 
 />
@@ -86,13 +90,16 @@
 	id="7" 
 	filename="sphere.obj" 
 />
+
+<modeldata 
+	id="8" 
+	filename="skybox.obj" 
+/>
 # Lights \>
 <light 
 	id="0" lightnumber="0" filename="dayLight"
 	posx="100.0" posy="2000.0" posz="-100.0"
-	lightR="1.0" lightG="1.0" lightB="1.0"
-	nolightR="0.0" nolightG="0.0" nolightB="0.0"
-	ambientR="0.3" ambientG="0.3" ambientB="0.3"
+	ambientR="0.0" ambientG="0.0" ambientB="0.0"
 \>
 
 # Camera objects \>
@@ -139,4 +146,9 @@
 	id="6" dataID="4" textureID="4" 
 	posx="-3000.0" posy="0.0" posz="500.0" 
 	rotx="0.0" roty="90.0" rotz="0.0" 
+/>
+<model 
+	id="7" dataID="8" textureID="5" 
+	posx="0.0" posy="0.0" posz="0.0" 
+	rotx="0.0" roty="0.0" rotz="180.0" 
 />

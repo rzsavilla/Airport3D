@@ -194,11 +194,13 @@ void Scene::loadLight(istringstream& iss) {
 	std::string sFilename = "";
 	int id = 0;
 	//Default values
-	GLfloat fLight[4] = { 1.0f, 1.0f, 1.0f, 1.0f};			//White light			
-	GLfloat fNoLight[4] = { 0.0f, 0.0f, 0.0f, 0.0f};				
-	GLfloat fAmbient[4] = { 0.1f, 0.1f, 0.1f, 1.0f};	
-	GLfloat fPosition[4] = { 0.0f, 1000.0f, 0.0f, 0.0f};			
-	GLfloat fRotation[3]  = { 0.0f, 0.0f, 0.0f};				
+	GLfloat a_fAmbient[4] = { 0.0f, 0.0f, 0.0f, 1.0f};	
+	GLfloat a_fSpecular[4] = { 1.0f, 1.0f, 1.0f, 1.0f};			//White light			
+	GLfloat a_fDiffuse[4] = { 1.0f, 1.0f, 1.0f, 1.0f};				
+	GLfloat a_fPosition[4] = { 0.0f, 1000.0f, 0.0f, 0.0f};			
+	GLfloat a_fSpotDirection[3]  = { 0.0f, 0.0f, -1.0f};
+	GLfloat a_fSpotExponent[1] = { 0.0f };
+	GLfloat a_fSpotCutOff[1] = { 180.0f };
 	
 	Light light;
 
@@ -246,39 +248,43 @@ void Scene::loadLight(istringstream& iss) {
 			}
 			light.setLightNum(iLightNumber);
 		}
-		// Read Position
-		else if (sAttribute == "posx") { readQuotes(iss,fPosition[0]); }
-		else if (sAttribute == "posy") { readQuotes(iss,fPosition[1]); }
-		else if (sAttribute == "posz") { readQuotes(iss,fPosition[2]); }
-		// Read Rotation
-		else if (sAttribute == "rotx") { readQuotes(iss,fRotation[0]); }
-		else if (sAttribute == "roty") { readQuotes(iss,fRotation[1]); }
-		else if (sAttribute == "rotz") { readQuotes(iss,fRotation[2]); }
 		// Read Light Colour
-		else if (sAttribute == "lightR") { readQuotes(iss,fLight[0]); }
-		else if (sAttribute == "lightG") { readQuotes(iss,fLight[1]); }
-		else if (sAttribute == "lightB") { readQuotes(iss,fLight[2]); }
-		else if (sAttribute == "lightA") { readQuotes(iss,fLight[3]); }
+		else if (sAttribute == "ambientR") { readQuotes(iss,a_fAmbient[0]); }
+		else if (sAttribute == "ambientG") { readQuotes(iss,a_fAmbient[1]); }
+		else if (sAttribute == "ambientB") { readQuotes(iss,a_fAmbient[2]); }
+		else if (sAttribute == "ambientA") { readQuotes(iss,a_fAmbient[3]); }
 		// Read No Light colour
-		else if (sAttribute == "nolightR") { readQuotes(iss,fNoLight[0]); }
-		else if (sAttribute == "nolightG") { readQuotes(iss,fNoLight[1]); }
-		else if (sAttribute == "nolightB") { readQuotes(iss,fNoLight[2]); }
-		else if (sAttribute == "nolightA") { readQuotes(iss,fNoLight[3]); }
+		else if (sAttribute == "diffuseR") { readQuotes(iss,a_fDiffuse[0]); }
+		else if (sAttribute == "diffuseG") { readQuotes(iss,a_fDiffuse[1]); }
+		else if (sAttribute == "diffuseB") { readQuotes(iss,a_fDiffuse[2]); }
+		else if (sAttribute == "diffuseA") { readQuotes(iss,a_fDiffuse[3]); }
 		// Read Ambient light
-		else if (sAttribute == "ambientR") { readQuotes(iss,fAmbient[0]); }
-		else if (sAttribute == "ambientG") { readQuotes(iss,fAmbient[1]); }
-		else if (sAttribute == "ambientB") { readQuotes(iss,fAmbient[2]); }
-		else if (sAttribute == "ambientA") { readQuotes(iss,fAmbient[3]); }
-
+		else if (sAttribute == "specularR") { readQuotes(iss,a_fAmbient[0]); }
+		else if (sAttribute == "specularG") { readQuotes(iss,a_fAmbient[1]); }
+		else if (sAttribute == "specularB") { readQuotes(iss,a_fAmbient[2]); }
+		else if (sAttribute == "specularA") { readQuotes(iss,a_fAmbient[3]); }
+		// Read Position
+		else if (sAttribute == "posx") { readQuotes(iss,a_fPosition[0]); }
+		else if (sAttribute == "posy") { readQuotes(iss,a_fPosition[1]); }
+		else if (sAttribute == "posz") { readQuotes(iss,a_fPosition[2]); }
+		// Read Rotation
+		else if (sAttribute == "dirx") { readQuotes(iss,a_fSpotDirection[0]); }
+		else if (sAttribute == "diry") { readQuotes(iss,a_fSpotDirection[1]); }
+		else if (sAttribute == "dirz") { readQuotes(iss,a_fSpotDirection[2]); }
+		// Read Exponent/intensity
+		else if (sAttribute == "exp") { readQuotes(iss,a_fSpotExponent[0]); }
+		else if (sAttribute == "cutoff") { readQuotes(iss,a_fSpotCutOff[0]); }
 	}
-	//Set transformation
-	light.setPosition(fPosition[0], fPosition[1], fPosition[2]);
-	light.setRotation(fRotation[0], fRotation[1], fRotation[2]);
-
+	
 	//Set light properties
-	light.setLightColour(fLight[0], fLight[1], fLight[2] , fLight[3]);
-	light.setNoLightColour(fNoLight[0], fNoLight[1], fNoLight[2] , fNoLight[3]);
-	light.setLightModelAmbient(fAmbient[0], fAmbient[1], fAmbient[2], fAmbient[3]);
+	light.setAmbient(a_fAmbient[0], a_fAmbient[1], a_fAmbient[2] , a_fAmbient[3]);
+	light.setDiffuse(a_fDiffuse[0], a_fDiffuse[1], a_fDiffuse[2] , a_fDiffuse[3]);
+	light.setSpecular(a_fSpecular[0], a_fSpecular[1], a_fSpecular[2], a_fSpecular[3]);
+
+	light.setPosition(a_fPosition[0], a_fPosition[1], a_fPosition[2]);
+	light.setSpotDirection(a_fSpotDirection[0], a_fSpotDirection[1], a_fSpotDirection[2]);
+	light.setSpotExponent(a_fSpotExponent[0]);
+	light.setSpotCutOff(a_fSpotCutOff[0]);
 	
 	//Add light to vector
 	m_vLights.push_back(std::pair<int,Light>(id,light));	
@@ -335,6 +341,8 @@ void Scene::loadModel(istringstream& iss) {
 	std::string sAttribute;
 	std::string sFilename = "";
 	Model model;
+	int iEnableLight = false;
+	int iEnableTexture = true;
 
 	int iModelDataID = 0;
 	int iTextureID = 0;
@@ -376,6 +384,8 @@ void Scene::loadModel(istringstream& iss) {
 		else if (sAttribute == "scalex") { readQuotes(iss,fScale[0]); }
 		else if (sAttribute == "scaley") { readQuotes(iss,fScale[1]); }
 		else if (sAttribute == "scalez") { readQuotes(iss,fScale[2]); } 
+		else if (sAttribute == "enablelight") { readQuotes(iss,iEnableLight); }
+		else if (sAttribute == "enableTexture") { readQuotes(iss,iEnableTexture); }
 	}
 
 	std::cout << "Loading Model: " << id << "\t";
@@ -389,6 +399,8 @@ void Scene::loadModel(istringstream& iss) {
 	model.setScale(fScale[0],fScale[1],fScale[2]);
 
 	model.setModel(getModelData(iModelDataID));
+	model.enableLight(iEnableLight);
+	model.enableTexture(iEnableTexture);
 
 	//Add model to vector
 	std::pair<int,Model> data(id,model);

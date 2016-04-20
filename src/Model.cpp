@@ -28,7 +28,6 @@ void Model::enableTexture(bool b) { m_bEnableTexture = b; }
 void Model::enableLight(bool b) { m_bEnableLight = b; }
 
 void Model::draw() {
-	//m_bHasMaterial;
 	if (m_bHasMaterial) {
 		glEnableClientState(GL_COLOR_MATERIAL);
 		m_Material->set();
