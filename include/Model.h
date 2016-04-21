@@ -1,3 +1,12 @@
+/*!
+	\class Model
+	\brief 3D model
+	Stores vertex positions, UV position and texture coordinates.
+	Models texture and lighting can be switched on and off.
+	Material can be set to the model
+	Pointers used for ModelData, Material and Texture, to reduce memory usage.
+*/
+
 #ifndef MODEL_H
 #define MODEL_H
 

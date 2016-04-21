@@ -3,8 +3,8 @@
 Model::Model() {
 	m_bModelSet = false;
 	m_bHasMaterial = false;
-	m_bEnableTexture = false;
-	m_bEnableLight = false;
+	m_bEnableTexture = true;
+	m_bEnableLight = true;
 }
 
 Model::~Model()  {
@@ -28,7 +28,11 @@ void Model::enableTexture(bool b) { m_bEnableTexture = b; }
 void Model::enableLight(bool b) { m_bEnableLight = b; }
 
 void Model::draw() {
+	if (!m_bEnableLight) {		//Disable of Enable lighting for this model
+		glDisable(GL_LIGHTING);
+	}
 
+	//Turn on material
 	if (m_bHasMaterial) {
 		glEnableClientState(GL_COLOR_MATERIAL);
 		m_Material->set();
@@ -51,7 +55,7 @@ void Model::draw() {
 	vector<float>& vertices = m_ModelData->getVertices();			//Pointer to vertex array
 	glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
 
-	if (m_bEnableLight && m_ModelData->hasNormals()) {
+	if (m_ModelData->hasNormals()) {
 		glEnableClientState(GL_NORMAL_ARRAY);
 		vector<float>& normals = m_ModelData->getNormals();		//Pointer to normal array
 		glNormalPointer(GL_FLOAT, 0, &normals[0]);
@@ -66,14 +70,11 @@ void Model::draw() {
 		glTexCoordPointer(2, GL_FLOAT, 0, &textureCoordinates[0]);
 	}
 
-	//Enable material
-
-
 	//Draw shape
 	glDrawArrays(GL_TRIANGLES, 0, (unsigned int)vertices.size() / 3);
 
 	//Deactivate vertex arrays after drawing
-	if (m_bEnableLight && m_ModelData->hasNormals()) {
+	if (m_ModelData->hasNormals()) {
 		glDisableClientState(GL_NORMAL_ARRAY);
 	}
 
@@ -83,15 +84,17 @@ void Model::draw() {
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisable(GL_TEXTURE_2D);
 	}
-	
-	//Turn off material
-	
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	glPopMatrix();
 
+	//Turn off material
 	if (m_bHasMaterial) {
 		glDisableClientState(GL_COLOR_MATERIAL);
+	}
+
+	if (!m_bEnableLight) {
+		glEnable(GL_LIGHTING);
 	}
 }

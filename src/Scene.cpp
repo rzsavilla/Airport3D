@@ -341,7 +341,7 @@ void Scene::loadModel(istringstream& iss) {
 	std::string sAttribute;
 	std::string sFilename = "";
 	Model model;
-	int iEnableLight = false;
+	int iEnableLight = true;
 	int iEnableTexture = true;
 
 	int iModelDataID = 0;
@@ -385,7 +385,7 @@ void Scene::loadModel(istringstream& iss) {
 		else if (sAttribute == "scaley") { readQuotes(iss,fScale[1]); }
 		else if (sAttribute == "scalez") { readQuotes(iss,fScale[2]); } 
 		else if (sAttribute == "enablelight") { readQuotes(iss,iEnableLight); }
-		else if (sAttribute == "enableTexture") { readQuotes(iss,iEnableTexture); }
+		else if (sAttribute == "enabletexture") { readQuotes(iss,iEnableTexture); }
 	}
 
 	std::cout << "Loading Model: " << id << "\t";
@@ -488,7 +488,6 @@ void Scene::update(float h) {
 }
 
 void Scene::draw() {
-
 	//Draw Camera
 	for (auto it = m_vCamera.begin(); it != m_vCamera.end(); ++it) {
 		//Able to switch to different cameras
@@ -498,9 +497,9 @@ void Scene::draw() {
 	}
 
 	//Draw Lights
-	//for (auto it = m_vLights.begin(); it != m_vLights.end(); ++it) {
-	//	it->second.draw();
-	//}
+	for (auto it = m_vLights.begin(); it != m_vLights.end(); ++it) {
+		it->second.draw();
+	}
 
 	//Draw Models
 	for (auto it = m_vModels.begin(); it != m_vModels.end(); ++it) {
@@ -509,9 +508,12 @@ void Scene::draw() {
 }
 
 Camera* Scene::getCamera() {
-	for (auto it = m_vCamera.begin(); it != m_vCamera.end(); ++it) {
+	std::vector<std::pair<int,Camera>>::iterator it;
+	for (it = m_vCamera.begin() ; it != m_vCamera.end(); ++it) {
 		if (it->first == m_uiCamera) {
 			return &it->second;
 		}
 	}
+	it = m_vCamera.begin();
+	return &it->second();
 }
