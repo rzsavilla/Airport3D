@@ -22,6 +22,7 @@ private:
 	bool m_bModelDataLoaded;			//!< Flag to check that all model data have been loaded
 	bool m_bTexturesLoaded;				//!< Flag to check that all textures have been loaded
 private:
+	ModelReader m_ModelReader;
 	std::vector<std::pair<int,GLuint>> m_viTextures;		//!< Stores object id and texture data
 	std::vector<std::pair<int,ModelData>> m_vModelData;		//!< Stores object id and model data object
 	std::vector<std::pair<int,Material>> m_vMaterial;		//!< Stores object id and Material object

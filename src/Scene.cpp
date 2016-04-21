@@ -182,12 +182,10 @@ void Scene::loadModelData(istringstream& iss) {
 
 	std::cout << "Loading: " << sFilename << "\t";
 
-	if (!sFilename.empty()) {
-		//Store the ModeData
-		ModelReader reader;																			//Reads obj file		
-		std::pair<int,ModelData> data(id,reader.ReadModelObjData(m_sModelBaseDir+sFilename));			//set Model Id, read obj
-		if (iTextureID >= 0) { data.second.setTexture(getTexture(iTextureID)); }					//Set Texture
-		m_vModelData.push_back(data);																//Add model to vector
+	if (!sFilename.empty()) {	
+		std::pair<int,ModelData> data(id,m_ModelReader.ReadModelObjData(m_sModelBaseDir+sFilename));	//set Model Id, read obj
+		if (iTextureID >= 0) { data.second.setTexture(getTexture(iTextureID)); }						//Set Texture, texture ID Must be greater than or equal to 0
+		m_vModelData.push_back(data);																	//Add model to vector
 		std::cout << "Loaded\t";
 	} 
 	else {

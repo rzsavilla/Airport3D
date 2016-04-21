@@ -24,7 +24,7 @@
 />
 <texture
 	id="5" 
-	filename="skybox_texture .bmp" 
+	filename="skybox_texture.bmp" 
 />
 
 # Material files \>
@@ -98,7 +98,7 @@
 # Lights \>
 <light 
 	id="0" lightnumber="0" filename="dayLight"
-	posx="100.0" posy="2000.0" posz="-100.0"
+	posx="100.0" posy="1000.0" posz="-100.0"
 	ambientR="0.0" ambientG="0.0" ambientB="0.0"
 \>
 
@@ -148,7 +148,7 @@
 	rotx="0.0" roty="90.0" rotz="0.0" 
 />
 <model 
-	id="7" dataID="8" textureID="5" 
+	id="7" dataID="8" textureID="5" enablelight="0" 
 	posx="0.0" posy="0.0" posz="0.0" 
-	rotx="0.0" roty="0.0" rotz="180.0" 
+	rotx="0.0" roty="0.0" rotz="90.0" 
 />
