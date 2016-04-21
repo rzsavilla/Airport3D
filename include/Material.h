@@ -1,3 +1,8 @@
+/*! \class Material
+	\brief Model Material
+	Determines how the model reflects light.
+*/
+
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
@@ -21,11 +26,14 @@ public:
 	Material();		//!< Default Constructor
 
 	//Setters
-	void setAmbient(float r, float g, float b, float a);
-	void setDiffuse(float r, float g, float b, float a);
-	void setSpecular(float r, float g, float b, float a);
-	void setEmission(float r, float g, float b, float a);
-	void setShininess(float f);
+	/*! Set Ambient light reflected
+		\param r RED \param g GREEN \param b BLUE \param a ALPHA
+	*/
+	void setAmbient(float r, float g, float b, float a);	
+	void setDiffuse(float r, float g, float b, float a);	//!< Set Diffuse light reflected
+	void setSpecular(float r, float g, float b, float a);	//!< Set Specular light reflected
+	void setEmission(float r, float g, float b, float a);	//!< Set Emission
+	void setShininess(float f);								//!< Set Shininess \param f Value from 0 to 128
 
 	void set();		//Set this as the material
 };

@@ -7,8 +7,8 @@ class MouseEvent {
 public:
 
 public:
-	MouseEvent();
-	void update();
+	MouseEvent();				//!< Constructor
+	void update();				
 	void updateMousePos();
 };
 

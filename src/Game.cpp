@@ -93,7 +93,7 @@ void Game::render() {
 	m_Elapsed.restart();
 	m_Window.display();
 }
-
+/*
 void Game::configureLightSources() {
 	GLfloat lightColour[] = {1.0f, 1.0f, 1.0f, 1.0f};
 	GLfloat noLight[] = {0.0f, 0.0f, 0.0f, 1.0f};
@@ -134,3 +134,4 @@ void Game::SetMaterialWhite() {
 	glMaterialfv(GL_FRONT, GL_SPECULAR, materialWhiteSpecular);
 	glMaterialf(GL_FRONT, GL_SHININESS, materialWhiteShininess);
 }
+*/

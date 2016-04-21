@@ -39,7 +39,7 @@ class ModelReader
 		// but which ww can simply pass to open gl in sequence to draw each triangle
 		// in the model
 
-		vector<float> m_vertexTriplets;	// v
+		vector<float> m_vertexTriplets;
 		vector<float> m_vertexNormalTriplets; 
 		vector<float> m_vertexTexturePairs;
 

@@ -35,10 +35,9 @@ void Scene::loadScene(std::string filename) {
 		throw std::invalid_argument("File not found");
 		return;		//Exit function
 	}
-	char c;
-	std::string sLine;
+	std::string sLine = "";
 	std::string sToken = "";
-	while (getline(sceneFile, sLine, '\>')) {		//Read everything withing the '\>'
+	while (getline(sceneFile, sLine, '\>')) {		//Read everything withing the ('\>')
 		istringstream iss(sLine);
 		sToken = "";
 		
@@ -403,8 +402,8 @@ void Scene::loadModel(istringstream& iss) {
 	model.setScale(fScale[0],fScale[1],fScale[2]);
 
 	model.setModel(getModelData(iModelDataID));
-	model.enableLight(iEnableLight);
-	model.enableTexture(iEnableTexture);
+	model.enableLight(iEnableLight != 0);			// Using (!= 0) removes forcing int to bool warning
+	model.enableTexture(iEnableTexture != 0);
 
 	//Add model to vector
 	std::pair<int,Model> data(id,model);

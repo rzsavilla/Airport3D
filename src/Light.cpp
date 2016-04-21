@@ -19,7 +19,7 @@ void Light::setLightNum(GLenum lightNumber) {
 		lightNumber == GL_LIGHT4 || lightNumber == GL_LIGHT5 || lightNumber == GL_LIGHT6 || lightNumber == GL_LIGHT7) {
 		m_lightNumber = lightNumber;
 	} else {
-		m_lightNumber = GL_LIGHT0;	//Default light
+		m_lightNumber = GL_LIGHT0;	//Set to Default light
 	}	
 }
 

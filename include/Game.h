@@ -22,47 +22,36 @@ private:
 	Scene scene;
 private:
 	////////////////////WINDOW////////////////////////
-	const int m_kiWindowWidth;
-	const int m_kiWindowHeight;
-	const float m_kfRefreshRate;
-	sf::Vector2i m_vWindowSize;
-	sf::ContextSettings m_Context;
-	sf::Window m_Window;
-	sf::ContextSettings m_WindowSettings;
-private:
-	///////////////////LOADERS///////////////////////
-	TextureLoader* m_TextureLoader;
-	ModelReader* m_ModelReader;
-
-	GLuint m_textures[2];
-private:
-	///////////////////MODELS///////////////////////
-	ModelData modelData[5];
-	Model model[5];
-	Camera camera;
+	const int m_kiWindowWidth;				//!< Window Width
+	const int m_kiWindowHeight;				//!< Window Height
+	const float m_kfRefreshRate;			//!< Refresh Rate
+	sf::Vector2i m_vWindowSize;				//!< Window Size, Width and Height
+	sf::ContextSettings m_Context;			//!< Window Settings
+	sf::Window m_Window;					//!< Everything is rendered onto this window
+	sf::ContextSettings m_WindowSettings;	//!< Window Settings
 private:
 	///////////////////INPUTS///////////////////////
-	sf::Event m_Event;
-	KeyPressEvent m_KeyPress;
-	KeyPressSub m_KeyPressSub;
+	sf::Event m_Event;				//!< Event for user input
+	KeyPressEvent m_KeyPress;		//!< Keypress event records key presses
+	KeyPressSub m_KeyPressSub;		//!< Notifies subscribers of any changes/updates to KeyPressEvent
 private:
-	//timers
-	sf::Clock m_TimeStep;
-	sf::Clock m_Elapsed;
+	///////////////////Timers///////////////////////
+	sf::Clock m_TimeStep;			//!< Timestep for euler intergration
+	sf::Clock m_Elapsed;			//!< Elapsed time
 private:
 	/////////////Game Loop///////////////////////////
-	void handleEvents();
-	void update(sf::Time timer);
-	void render();
+	void handleEvents();				//!< Update inputs
+	void update(sf::Time timer);		//!< Update program logic
+	void render();						//!< Render the program
 
-	float m_lightPosition[4];
-	void configureLightSources();
-	void SetLightPosition(float x, float y, float z);
-	void SetMaterialWhite();
+	//float m_lightPosition[4];
+	//void configureLightSources();
+	//void SetLightPosition(float x, float y, float z);
+	//void SetMaterialWhite();
 public:
-	Game();
-	~Game();
-	void run();				//!< Run the game loop
+	Game();			//!< Default constructor
+	~Game();		//!< Destructor
+	void run();		//!< Run the game loop
 };
 
 #endif

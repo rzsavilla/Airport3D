@@ -1,3 +1,7 @@
+/*
+	Unused unfinished 3D 4x4 homogenous tranform matrix
+*/
+
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 

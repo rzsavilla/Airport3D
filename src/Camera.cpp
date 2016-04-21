@@ -96,48 +96,29 @@ void Camera::draw() {
 		m_vLSight.getX(),m_vLSight.getY(),m_vLSight.getZ(),
 		m_vUp.getX(),m_vUp.getY(),m_vUp.getZ()
 	);
-	std::cout << m_vRotation.getX() << " " << m_vRotation.getY() << " " << m_vRotation.getZ() << std::endl;
+	//std::cout << m_vRotation.getX() << " " << m_vRotation.getY() << " " << m_vRotation.getZ() << std::endl;
 }
 
-void Camera::goForward() {
-	move(m_vDirection * m_fSpeedH);
-}
-void Camera::goBackward() {
-	move((m_vDirection * m_fSpeedH) * -1);
-}
-void Camera::goLeft() {
-	move((m_vRight * m_fSpeedH) * -1);
-}
-void Camera::goRight() {
-	move(m_vRight * m_fSpeedH);
-}
-void Camera::goUp() {
-	move(m_vUp * m_fSpeedH);
-}
-void Camera::goDown() {
-	move((m_vUp * m_fSpeedH) * -1);
-}
+void Camera::goForward() { move(m_vDirection * m_fSpeedH); }
+void Camera::goBackward() { move((m_vDirection * m_fSpeedH) * -1); }
+void Camera::goLeft() { move((m_vRight * m_fSpeedH) * -1); }
+void Camera::goRight() { move(m_vRight * m_fSpeedH); }
+void Camera::goUp() { move(m_vUp * m_fSpeedH); }
+void Camera::goDown() { move((m_vUp * m_fSpeedH) * -1); }
 
-void Camera::lookUp() {
-	rotateY(m_fRotationSpeedH);
-}
-void Camera::lookDown() {
-	rotateY(-m_fRotationSpeedH);
-}
-void Camera::turnLeft() {
-	rotateX(-m_fRotationSpeedH);
-}
-void Camera::turnRight() {
-	rotateX(m_fRotationSpeedH);
-}
-void Camera::tiltLeft() {
-	rotateZ(m_fRotationSpeedH);
-}
-void Camera::tiltRight() {
-	rotateZ(-m_fRotationSpeedH);
-}
+void Camera::lookUp() { rotateY(m_fRotationSpeedH); }
+void Camera::lookDown() { rotateY(-m_fRotationSpeedH); }
+void Camera::turnLeft() { rotateX(-m_fRotationSpeedH); }
+void Camera::turnRight() { rotateX(m_fRotationSpeedH); }
+void Camera::tiltLeft() { rotateZ(m_fRotationSpeedH); }
+void Camera::tiltRight() { rotateZ(-m_fRotationSpeedH); }
 
+/*
+	Code used for camera rotation
+	https://github.com/dchhetri/OpenGL-City/blob/master/opengl_camera.cpp
+*/
 void Camera::updateRotationX() {
+	//Keep rotation angle between 0-359
 	if (m_vRotation.getX() >= 360) {
 		m_vRotation.setX(m_vRotation.getX() - 360);
 	} else if (m_vRotation.getX() < 0) {
@@ -188,14 +169,10 @@ void Camera::updateRotationZ() {
 	m_vRight = m_vRight * cos(fAngle * (3.141 / 180.0f)) +
 				   m_vUp * sin(fAngle * (3.141 / 180.0f));
 
-	m_vDirection = m_vDirection.unitVector();						//Normalize
+	//m_vDirection = m_vDirection.unitVector();						//Normalize
 
 	computeUp();
 }
 
-void Camera::computeRight() {
-	m_vRight = m_vDirection.crossProduct(m_vUp);
-}
-void Camera::computeUp() {
-	m_vUp = m_vDirection.crossProduct(m_vRight) * -1;
-}
+void Camera::computeRight() { m_vRight = m_vDirection.crossProduct(m_vUp); }
+void Camera::computeUp() { m_vUp = m_vDirection.crossProduct(m_vRight) * -1; }

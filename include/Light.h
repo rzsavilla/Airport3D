@@ -1,3 +1,7 @@
+/*	\class Light
+	\brief OpenGL light
+*/
+
 #ifndef LIGHT_H
 #define LIGHT_H
 
@@ -22,7 +26,7 @@ private:
 public:
 	Light(); //!< Default Constructor
 
-	void setLightNum(GLenum lightNumber);
+	void setLightNum(GLenum lightNumber);						//!< Set which OpenGL light to use
 
 	void setAmbient(float R, float G, float B, float A);		//!< Colour projected by the light
 	void setDiffuse(float R, float G, float B, float A);		//!< Colour of no light
@@ -30,8 +34,8 @@ public:
 	
 	void setPosition(float x, float y, float z);				//!< Position of the light in the world
 	void setSpotDirection(float x, float y, float z);			//!< Direction of light
-	void setSpotExponent(float f);
-	void setSpotCutOff(float f);
+	void setSpotExponent(float f);								//!< Light intensity
+	void setSpotCutOff(float f);								//!< Light range
 
 	float getPosX();	//!< Return x position
 	float getPosY();	//!< Return y position

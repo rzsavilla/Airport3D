@@ -8,7 +8,7 @@
 
 class Drawable {
 public:
-	virtual void draw() = 0;
+	virtual void draw() = 0;		//!< Pure virtual function
 };
 
 #endif

@@ -1,6 +1,6 @@
 /*!	\file Scene.h
 	\class Scene
-	\brief Loads, stores, updates and draws objects into the world
+	\brief Loads, stores, updates and draws objects into the world.
 */
 
 #ifndef SCENE_H
@@ -61,9 +61,9 @@ public:
 	/*! Loads a scene from a file, 
 		including models
 	*/
-	void loadScene(std::string filename);	//!< Will open and parse scene file
+	void loadScene(std::string filename);	//!< Will open and parse scene file \param filename Location and name of scene file
 	void reset();							//!< Reset the scene, resets position/orientation of all models
-	void update(float h);					//!< update all scene objects
+	void update(float h);					//!< update all scene objects \param h Timestep used on moving objects
 	void draw();							//!< Draw all scene objects
 
 	Camera* getCamera();					//!< Return current camera being drawn
