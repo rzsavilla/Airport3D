@@ -161,6 +161,7 @@ void Scene::loadMaterial(istringstream& iss) {
 
 void Scene::loadModelData(istringstream& iss) {
 	int id = 0;
+	int iTextureID = -1;
 	std::string sAttribute;
 	std::string sFilename = "";
 	while (!iss.eof()) {
@@ -174,19 +175,24 @@ void Scene::loadModelData(istringstream& iss) {
 		else if (sAttribute == "filename") {
 			readQuotes(iss,sFilename);			//Read attribute value
 		}
+		else if (sAttribute == "textureID") {
+			readQuotes(iss,iTextureID);
+		}
 	}
 
 	std::cout << "Loading: " << sFilename << "\t";
 
 	if (!sFilename.empty()) {
 		//Store the ModeData
-		ModelReader reader;
-		std::pair<int,ModelData> data(id,reader.ReadModelObjData(m_sModelBaseDir+sFilename));
-		m_vModelData.push_back(data);
+		ModelReader reader;																			//Reads obj file		
+		std::pair<int,ModelData> data(id,reader.ReadModelObjData(m_sModelBaseDir+sFilename));			//set Model Id, read obj
+		if (iTextureID >= 0) { data.second.setTexture(getTexture(iTextureID)); }					//Set Texture
+		m_vModelData.push_back(data);																//Add model to vector
 		std::cout << "Loaded\t";
-		return;
+	} 
+	else {
+		std::cout << "Failed\t";
 	}
-	std::cout << "Failed\t";
 }
 
 void Scene::loadLight(istringstream& iss) {
@@ -514,6 +520,8 @@ Camera* Scene::getCamera() {
 			return &it->second;
 		}
 	}
+	//Camera not found
+	std::cerr << "Current camera not found\n";
 	it = m_vCamera.begin();
-	return &it->second();
+	return &it->second;
 }
