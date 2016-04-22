@@ -1,8 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-
-
 #include "KeyPressEvent.h"
 #include "KeyPressSub.h"
 #include "TextureLoader.h"
