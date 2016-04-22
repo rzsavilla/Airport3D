@@ -28,7 +28,7 @@ void Model::enableTexture(bool b) { m_bEnableTexture = b; }
 void Model::enableLight(bool b) { m_bEnableLight = b; }
 
 void Model::draw() {
-
+	glPushMatrix();
 	glEnable(GL_NORMALIZE);		//Fix No lighting on scaled models
 
 	if (!m_bEnableLight) {		//Disable of Enable lighting for this model
@@ -41,18 +41,22 @@ void Model::draw() {
 		m_Material->set();
 	}
 
-	glPushMatrix();
+	
 
 	//Transformations
 	//Translate to position
-	glTranslatef(m_vPosition.getX() + m_vOrigin.getX(),m_vPosition.getY() + m_vOrigin.getY(),m_vPosition.getZ() + m_vOrigin.getZ());
-	
+	glTranslatef((m_vPosition.getX()),(m_vPosition.getY()),(m_vPosition.getZ()));
+	//glTranslatef(-(m_vPosition.getX() + m_vOrigin.getX()),-(m_vPosition.getY() - m_vOrigin.getY()),-(m_vPosition.getZ() + m_vOrigin.getZ()));
+	glScalef(m_vScale.getX(),m_vScale.getY(),m_vScale.getZ());	//Scale
 	glRotatef(m_vRotation.getX(),1.0f,0.0f,0.0f);				//Rotate on origin
 	glRotatef(m_vRotation.getY(),0.0f,1.0f,0.0f);
 	glRotatef(m_vRotation.getZ(),0.0f,0.0f,1.0f);
+	
 	//Move to origin
-	glTranslatef(m_vPosition.getX() - m_vOrigin.getX(),m_vPosition.getY() - m_vOrigin.getY(),m_vPosition.getZ() - m_vOrigin.getZ());
-	glScalef(m_vScale.getX(),m_vScale.getY(),m_vScale.getZ());	//Scale
+	//glTranslatef(-(m_vPosition.getX()),-(m_vPosition.getY()),-(m_vPosition.getZ()));
+	//glTranslatef(m_vPosition.getX() + m_vOrigin.getX(),m_vPosition.getY() + m_vOrigin.getY(),m_vPosition.getZ() + m_vOrigin.getZ());
+	
+	
 	// Active and specify pointer to vertex array
 	glEnableClientState(GL_VERTEX_ARRAY);
 	vector<float>& vertices = m_ModelData->getVertices();			//Pointer to vertex array
@@ -90,8 +94,7 @@ void Model::draw() {
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 
-	glPopMatrix();
-
+	
 	//Turn off material
 	if (m_bHasMaterial) {
 		glDisableClientState(GL_COLOR_MATERIAL);
@@ -102,4 +105,7 @@ void Model::draw() {
 	}
 
 	glDisable(GL_NORMALIZE);
+
+	glPopMatrix();
+
 }

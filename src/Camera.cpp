@@ -2,8 +2,8 @@
 using namespace sf;
 
 Camera::Camera() {
-	m_fSpeed = 100000.f;
-	m_fRotationSpeed = 2000.f;
+	m_fSpeed = 1000.f;
+	m_fRotationSpeed = 1000.f;
 	m_fSpeedH = 0.0f;
 	m_fRotationSpeedH = 0.0f;
 
@@ -27,6 +27,7 @@ void Camera::keysUpdated(KeyPressEvent* state) {
 	//Movement
 	if (state->pressed(Keyboard::Space)) {
 		setRotation(0.0f,0.0f,0.0f);
+		setPosition(0.0f,5.0f,0.0f);
 	}
 
 	if (state->pressed(Keyboard::LShift)) {
@@ -97,6 +98,7 @@ void Camera::draw() {
 		m_vUp.getX(),m_vUp.getY(),m_vUp.getZ()
 	);
 	//std::cout << m_vRotation.getX() << " " << m_vRotation.getY() << " " << m_vRotation.getZ() << std::endl;
+	//std::cout << "Pos " << m_vPosition.getX() << " " << m_vPosition.getY() << " " << m_vPosition.getZ() << std::endl;
 }
 
 void Camera::goForward() { move(m_vDirection * m_fSpeedH); }

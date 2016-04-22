@@ -42,10 +42,6 @@ private:
 	void update(sf::Time timer);		//!< Update program logic
 	void render();						//!< Render the program
 
-	//float m_lightPosition[4];
-	//void configureLightSources();
-	//void SetLightPosition(float x, float y, float z);
-	//void SetMaterialWhite();
 public:
 	Game();			//!< Default constructor
 	~Game();		//!< Destructor

@@ -200,7 +200,7 @@ void Scene::loadLight(istringstream& iss) {
 	GLfloat a_fAmbient[4] = { 0.0f, 0.0f, 0.0f, 1.0f};	
 	GLfloat a_fSpecular[4] = { 1.0f, 1.0f, 1.0f, 1.0f};			//White light			
 	GLfloat a_fDiffuse[4] = { 1.0f, 1.0f, 1.0f, 1.0f};				
-	GLfloat a_fPosition[4] = { 0.0f, 1000.0f, 0.0f, 0.0f};			
+	GLfloat a_fPosition[4] = { 0.0f, 0.0f, 0.0f, 0.0f};			
 	GLfloat a_fSpotDirection[3]  = { 0.0f, 0.0f, -1.0f};
 	GLfloat a_fSpotExponent[1] = { 0.0f };
 	GLfloat a_fSpotCutOff[1] = { 180.0f };
@@ -270,6 +270,7 @@ void Scene::loadLight(istringstream& iss) {
 		else if (sAttribute == "posx") { readQuotes(iss,a_fPosition[0]); }
 		else if (sAttribute == "posy") { readQuotes(iss,a_fPosition[1]); }
 		else if (sAttribute == "posz") { readQuotes(iss,a_fPosition[2]); }
+		else if (sAttribute == "posw") { readQuotes(iss,a_fPosition[3]); }
 		// Read Rotation
 		else if (sAttribute == "dirx") { readQuotes(iss,a_fSpotDirection[0]); }
 		else if (sAttribute == "diry") { readQuotes(iss,a_fSpotDirection[1]); }
@@ -284,13 +285,13 @@ void Scene::loadLight(istringstream& iss) {
 	light.setDiffuse(a_fDiffuse[0], a_fDiffuse[1], a_fDiffuse[2] , a_fDiffuse[3]);
 	light.setSpecular(a_fSpecular[0], a_fSpecular[1], a_fSpecular[2], a_fSpecular[3]);
 
-	light.setPosition(a_fPosition[0], a_fPosition[1], a_fPosition[2]);
+	light.setPosition(a_fPosition[0], a_fPosition[1], a_fPosition[2], a_fPosition[3]);
 	light.setSpotDirection(a_fSpotDirection[0], a_fSpotDirection[1], a_fSpotDirection[2]);
 	light.setSpotExponent(a_fSpotExponent[0]);
 	light.setSpotCutOff(a_fSpotCutOff[0]);
 	
 	//Add light to vector
-	m_vLights.push_back(std::pair<int,Light>(id,light));	
+	m_vLights.push_back(std::pair<int,Light>(id,light));
 }
 
 void Scene::loadCamera(istringstream& iss) {
@@ -488,6 +489,14 @@ void Scene::update(float h) {
 			it->second.update(h);
 		}
 	}
+
+	//Move aircraft
+	Vector3D vPos = m_vModels.at(9).second.getPosition();
+	float fSpeed = 300.0f;
+	m_vModels.back().second.setPosition(vPos.getX(),vPos.getY(),vPos.getZ() + fSpeed * h);
+	if (m_vModels.back().second.getPosition().getZ() > 500.0f) {
+		m_vModels.back().second.setPosition(vPos.getX(),vPos.getY(),-500.0f);
+	}
 }
 
 void Scene::draw() {
@@ -498,12 +507,12 @@ void Scene::draw() {
 			it->second.draw();
 		}
 	}
-
 	//Draw Lights
 	for (auto it = m_vLights.begin(); it != m_vLights.end(); ++it) {
+		glPushMatrix();
 		it->second.draw();
+		glPopMatrix();
 	}
-
 	//Draw Models
 	for (auto it = m_vModels.begin(); it != m_vModels.end(); ++it) {
 		it->second.draw();

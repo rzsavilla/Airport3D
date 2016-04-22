@@ -3,7 +3,7 @@
 
 Light::Light() {
 	//Default light values
-	setPosition(0.0f,500.0f,0.0f);
+	setPosition(0.0f,500.0f,0.0f, 0.0f);
 	setSpotDirection(0.0f,0.0f,-1.0f);
 	setAmbient(0.0f,0.0f,0.0f,1.0f);
 	setDiffuse(1.0f,1.0f,1.0f,1.0f);
@@ -42,11 +42,11 @@ void Light::setSpecular(float R, float G, float B, float A) {
 	ma_fSpecular[3] = A;
 }
 
-void Light::setPosition(float x, float y, float z) {
+void Light::setPosition(float x, float y, float z, float w) {
 	ma_position[0] = x;
 	ma_position[1] = y;
 	ma_position[2] = z;
-	ma_position[3] = 0.5;
+	ma_position[3] = w;
 }
 void Light::setSpotDirection(float x, float y, float z) {
 	ma_fSpotDirection[0] = x;
@@ -68,9 +68,7 @@ void Light::draw() {
 	glEnable(GL_LIGHTING);
 	glEnable(m_lightNumber);
 	//Apply transformations
-	glPushMatrix();
 	glTranslatef(ma_position[0], ma_position[1], ma_position[2]);		// Move to position
-
 	//Set Light values
 	glLightfv(m_lightNumber, GL_AMBIENT, ma_fAmbient);
 	glLightfv(m_lightNumber, GL_DIFFUSE, ma_fDiffuse);
@@ -79,6 +77,4 @@ void Light::draw() {
 	glLightfv(m_lightNumber, GL_SPOT_DIRECTION, ma_fSpotDirection);
 	glLightfv(m_lightNumber, GL_SPOT_EXPONENT, ma_fSpotExponent);
 	glLightfv(m_lightNumber, GL_SPOT_CUTOFF, ma_fSpotCutoff);
-	
-	glPopMatrix;
 }

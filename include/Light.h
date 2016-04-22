@@ -32,7 +32,7 @@ public:
 	void setDiffuse(float R, float G, float B, float A);		//!< Colour of no light
 	void setSpecular(float R, float G, float B, float A);		//!< Colour of ambient light
 	
-	void setPosition(float x, float y, float z);				//!< Position of the light in the world
+	void setPosition(float x, float y, float z, float w);		//!< Position of the light in the world
 	void setSpotDirection(float x, float y, float z);			//!< Direction of light
 	void setSpotExponent(float f);								//!< Light intensity
 	void setSpotCutOff(float f);								//!< Light range
