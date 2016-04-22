@@ -28,6 +28,9 @@ void Model::enableTexture(bool b) { m_bEnableTexture = b; }
 void Model::enableLight(bool b) { m_bEnableLight = b; }
 
 void Model::draw() {
+
+	glEnable(GL_NORMALIZE);		//Fix No lighting on scaled models
+
 	if (!m_bEnableLight) {		//Disable of Enable lighting for this model
 		glDisable(GL_LIGHTING);
 	}
@@ -97,4 +100,6 @@ void Model::draw() {
 	if (!m_bEnableLight) {
 		glEnable(GL_LIGHTING);
 	}
+
+	glDisable(GL_NORMALIZE);
 }
